@@ -1,0 +1,40 @@
+<div class="container pt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-4">
+      <div class="card shadow-lg">
+        <div class="card-body">
+          <h3 class="card-title text-center mb-4">Login</h3>
+          <form #LoginForm="ngForm" (ngSubmit)="login(LoginForm)" novalidate>
+
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" id="email" class="form-control" [(ngModel)]="userEmail" name="email" required email #emailRef="ngModel">
+              <div class="text-danger mt-1" *ngIf="emailRef.invalid && emailRef.touched">
+                <small *ngIf="emailRef.errors?.['required']">Email is required.</small>
+                <small *ngIf="emailRef.errors?.['email']">Invalid email format.</small>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input type="password" id="password" class="form-control" [(ngModel)]="password" name="password" required #passwordRef="ngModel">
+              <div class="text-danger mt-1" *ngIf="passwordRef.invalid && passwordRef.touched">
+                <small *ngIf="passwordRef.errors?.['required']">Password is required.</small>
+              </div>
+            </div>
+
+            <div class="text-end mb-3">
+              <a routerLink="/register">Don't have an account? Register</a>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100" [disabled]="LoginForm.invalid">Login</button>
+
+          </form>
+          <div *ngIf="error" class="alert alert-danger mt-3 text-center">
+            {{ error }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

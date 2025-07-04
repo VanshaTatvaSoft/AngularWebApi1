@@ -1,0 +1,22 @@
+<form [formGroup]="form">
+  <div class="mb-3">
+    <label>Name</label>
+    <input class="form-control" formControlName="productname">
+  </div>
+  <div class="mb-3">
+    <label>Description</label>
+    <input class="form-control" formControlName="productdesc">
+  </div>
+  <div class="mb-3">
+    <label>Price</label>
+    <input type="number" class="form-control" formControlName="productprice">
+  </div>
+  <div class="mb-3">
+    <label>Quantity</label>
+    <input type="number" class="form-control" formControlName="productquantity">
+  </div>
+  <div class="text-end">
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Add</button>
+    <button type="button" class="btn btn-secondary ms-2" (click)="close()">Cancel</button>
+  </div>
+</form>
