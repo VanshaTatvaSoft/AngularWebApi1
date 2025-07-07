@@ -1,13 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, Injector, input, Input, OnInit, SimpleChanges, Type, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { GenericDialog } from '../generic-dialog/generic-dialog';
+import { DialogRef } from '@angular/cdk/dialog';
 
 @Component({
   selector: 'app-generic-list',
@@ -50,8 +51,7 @@ export class GenericList {
     const dialogRef = this.dialog.open(GenericDialog,{
       width: '500px',
       data: {
-        component: this.addComponent,
-        injector: this.injector
+        component: this.addComponent
       }
     });
 

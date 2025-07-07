@@ -1,5 +1,5 @@
 import { CommonModule, NgComponentOutlet } from '@angular/common';
-import { Component, inject, Type } from '@angular/core';
+import { Component, Inject, inject, Injector, Type } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
@@ -10,13 +10,22 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./generic-dialog.css']
 })
 export class GenericDialog {
-  componentType: Type<any>;
-  injector: any;
-  dialogRef = inject(MatDialogRef<GenericDialog>);
 
-  constructor() {
-    const data = inject(MAT_DIALOG_DATA);
+  componentType: Type<any>;
+  injector: Injector;
+
+  constructor(
+    private dialogRef: MatDialogRef<GenericDialog>,
+    parentInjector: Injector,
+    @Inject(MAT_DIALOG_DATA) private data: any
+  ) {
     this.componentType = data.component;
-    this.injector = data.injector;
+    this.injector = Injector.create({
+      providers: [
+        { provide: MatDialogRef, useValue: dialogRef },
+        { provide: MAT_DIALOG_DATA, useValue: null }
+      ],
+      parent: parentInjector
+    });
   }
 }

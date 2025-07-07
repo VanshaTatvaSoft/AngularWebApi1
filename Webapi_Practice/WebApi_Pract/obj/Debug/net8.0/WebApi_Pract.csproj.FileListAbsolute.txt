@@ -120,3 +120,4 @@ D:\DonetWebApiPractice\Webapi_Practice\WebApi_Pract\bin\Debug\net8.0\Microsoft.I
 D:\DonetWebApiPractice\Webapi_Practice\WebApi_Pract\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
 D:\DonetWebApiPractice\Webapi_Practice\WebApi_Pract\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
 D:\DonetWebApiPractice\Webapi_Practice\WebApi_Pract\bin\Debug\net8.0\BCrypt.Net-Next.dll
+D:\DonetWebApiPractice\Webapi_Practice\WebApi_Pract\obj\Debug\net8.0\WebApi_Pract.sourcelink.json

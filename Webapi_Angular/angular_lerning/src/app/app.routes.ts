@@ -22,7 +22,7 @@ export const routes: Routes = [
     component: MainLayoutComponent,
     children: [
       { path: 'dashboard', component: Dashboard, canActivate: [authGaurdGuard] },
-      { path: 'products', component: Products, canActivate: [authGaurdGuard] }
+      { path: 'products', component: Products, canActivate: [authGaurdGuard] } 
     ]
   },
   { path: '**', redirectTo: 'login' }

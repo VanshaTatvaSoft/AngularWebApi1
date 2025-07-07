@@ -27,8 +27,24 @@ export class AddProduct {
     });
   }
 
+  submit(): void {
+    if (this.form.valid) {
+      this.productService.addProduct(this.form.value).subscribe({
+        next: (res) => {
+          if (res.status) {
+            alert(res.message);
+            this.dialogRef.close(true);
+          } else {
+            alert('Failed to add product.');
+          }
+        },
+        error: () => alert('Error adding product.')
+      });
+    }
+  }
+
   close(): void {
-    this.dialogRef.close();
+    this.dialogRef.close(true);
   }
 
 }

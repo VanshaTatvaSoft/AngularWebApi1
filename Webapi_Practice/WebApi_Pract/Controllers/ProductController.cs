@@ -36,7 +36,7 @@ public class ProductController(WebApiPractContext context) : ControllerBase
             Product product = new(){
                 Productname = productDTO.Productname,
                 Productdesc = productDTO.Productdesc,
-                Productprice = productDTO.Productprice,
+                Productprice = productDTO.Productprice,  
                 Productquantity = productDTO.Productquantity
             };
             await _context.Products.AddAsync(product);
