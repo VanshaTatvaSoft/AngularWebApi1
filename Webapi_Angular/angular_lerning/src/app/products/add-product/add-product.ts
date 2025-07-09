@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ProductService } from '../services/product';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
+import { Alert } from '../../shared/services/alert';
 
 @Component({
   selector: 'app-add-product',
@@ -21,7 +22,8 @@ export class AddProduct {
     private productService: ProductService,
     private dialogRef: MatDialogRef<AddProduct>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private toaster: ToastrService
+    private toaster: ToastrService,
+    private alert: Alert
   ) {
     this.form = this.fb.group({
       id: [null],
@@ -48,10 +50,11 @@ export class AddProduct {
       action.subscribe({
         next: (res) => {
           if (res.status) {
+            this.alert.succuess(res.message);
             this.toaster.success(res.message);
             this.dialogRef.close(true);
           } else {
-            this.toaster.error('Failed to add product.');
+            this.toaster.error(res.message);
           }
         },
         error: () => this.toaster.error('Error adding product.')

@@ -21,7 +21,7 @@ public class ProductController(WebApiPractContext context) : ControllerBase
     public async Task<IActionResult> GetAllProducts(string searchCriteria = null, int pageNumber = 1, int pageSize = 5)
     {
         IQueryable<Product> productsQuery = _context.Products.Where(p => !p.Isdeleted);
-        
+
         if (!searchCriteria.IsNullOrEmpty())
         {
             productsQuery = productsQuery.Where(p => p.Productname.ToLower().Contains(searchCriteria.ToLower()));
@@ -30,6 +30,7 @@ public class ProductController(WebApiPractContext context) : ControllerBase
         int totalCount = await productsQuery.CountAsync();
 
         List<Product> products = await productsQuery
+            .OrderBy(p => p.Id)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
@@ -50,6 +51,15 @@ public class ProductController(WebApiPractContext context) : ControllerBase
     {
         try
         {
+            bool check = await _context.Products.AnyAsync(p => p.Productname.ToLower() == productDTO.Productname.ToLower());
+            if (check)
+            {
+                return Ok(new
+                {
+                    Status = false,
+                    Message = "Product with this name already exist."
+                });
+            }
             Product product = new()
             {
                 Productname = productDTO.Productname,

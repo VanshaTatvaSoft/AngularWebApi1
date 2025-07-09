@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "d:\\DonetWebApiPractice\\Webapi_Practice\\WebApi_Pract\\WebApi_Pract.csproj": {}
+    "D:\\DonetWebApiPractice\\Webapi_Practice\\WebApi_Pract\\WebApi_Pract.csproj": {}
   },
   "projects": {
-    "d:\\DonetWebApiPractice\\Webapi_Practice\\WebApi_Pract\\WebApi_Pract.csproj": {
+    "D:\\DonetWebApiPractice\\Webapi_Practice\\WebApi_Pract\\WebApi_Pract.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "d:\\DonetWebApiPractice\\Webapi_Practice\\WebApi_Pract\\WebApi_Pract.csproj",
+        "projectUniqueName": "D:\\DonetWebApiPractice\\Webapi_Practice\\WebApi_Pract\\WebApi_Pract.csproj",
         "projectName": "WebApi_Pract",
-        "projectPath": "d:\\DonetWebApiPractice\\Webapi_Practice\\WebApi_Pract\\WebApi_Pract.csproj",
+        "projectPath": "D:\\DonetWebApiPractice\\Webapi_Practice\\WebApi_Pract\\WebApi_Pract.csproj",
         "packagesPath": "C:\\Users\\pci217\\.nuget\\packages\\",
-        "outputPath": "d:\\DonetWebApiPractice\\Webapi_Practice\\WebApi_Pract\\obj\\",
+        "outputPath": "D:\\DonetWebApiPractice\\Webapi_Practice\\WebApi_Pract\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\pci217\\AppData\\Roaming\\NuGet\\NuGet.Config"
