@@ -6,6 +6,8 @@ import { RegisterComponent } from './auth/register.component/register.component'
 import { LoginLayoutComponent } from './layouts/login-layout.component/login-layout.component';
 import { MainLayoutComponent } from './layouts/main-layout.component/main-layout.component';
 import { Products } from './products/products';
+import { NotFound } from './error/not-found/not-found';
+import { Forbiden } from './error/forbiden/forbiden';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -25,5 +27,6 @@ export const routes: Routes = [
       { path: 'products', component: Products, canActivate: [authGaurdGuard] }
     ]
   },
-  { path: '**', redirectTo: 'login' }
+  { path: '**', component: NotFound },
+  { path: 'AccessDenied', component: Forbiden }
 ];

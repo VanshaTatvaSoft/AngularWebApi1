@@ -6,22 +6,22 @@
           <h3 class="card-title text-center mb-4">Login</h3>
           <form #LoginForm="ngForm" (ngSubmit)="login(LoginForm)" novalidate>
 
-            <div class="mb-3">
-              <label for="email" class="form-label">Email</label>
-              <input type="email" id="email" class="form-control" [(ngModel)]="userEmail" name="email" required email #emailRef="ngModel">
-              <div class="text-danger mt-1" *ngIf="emailRef.invalid && emailRef.touched">
+            <mat-form-field class="w-100 mb-3">
+              <mat-label for="email" class="form-label">Email</mat-label>
+              <input matInput type="email" id="email" class="form-control" [(ngModel)]="userEmail" name="email" required email #emailRef="ngModel">
+              <mat-error class="text-danger mt-1" *ngIf="emailRef.invalid && emailRef.touched">
                 <small *ngIf="emailRef.errors?.['required']">Email is required.</small>
                 <small *ngIf="emailRef.errors?.['email']">Invalid email format.</small>
-              </div>
-            </div>
+              </mat-error>
+            </mat-form-field>
 
-            <div class="mb-3">
-              <label for="password" class="form-label">Password</label>
-              <input type="password" id="password" class="form-control" [(ngModel)]="password" name="password" required #passwordRef="ngModel" appTogglePassword>
-              <div class="text-danger mt-1" *ngIf="passwordRef.invalid && passwordRef.touched">
+            <mat-form-field class="w-100 mb-3">
+              <mat-label for="password" class="form-label">Password</mat-label>
+              <input matInput type="password" id="password" class="form-control" [(ngModel)]="password" name="password" required #passwordRef="ngModel" appTogglePassword>
+              <mat-error class="text-danger mt-1" *ngIf="passwordRef.invalid && passwordRef.touched">
                 <small *ngIf="passwordRef.errors?.['required']">Password is required.</small>
-              </div>
-            </div>
+              </mat-error>
+            </mat-form-field>
 
             <div class="text-end mb-3">
               <a routerLink="/register">Don't have an account? Register</a>

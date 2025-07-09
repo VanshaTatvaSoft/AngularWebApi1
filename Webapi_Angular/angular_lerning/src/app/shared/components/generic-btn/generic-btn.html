@@ -1,0 +1,12 @@
+<button
+  mat-button
+  [matButton]="matBtnType"
+  [ngClass]="variant"
+  [color]="color"
+  [disabled]="disabled"
+  [type]="type"
+  (click)="onClick()"
+>
+  <mat-icon *ngIf="icon" class="me-1">{{ icon }}</mat-icon>
+  <span *ngIf="label">{{ label }}</span>
+</button>

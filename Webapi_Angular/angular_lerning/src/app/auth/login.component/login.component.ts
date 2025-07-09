@@ -6,39 +6,58 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { TogglePassword } from '../../directives/toggle-password';
 import { MatIconModule } from '@angular/material/icon';
 import { ToastrService } from 'ngx-toastr';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-login.component',
   standalone: true,
-  imports: [CommonModule, FormsModule , RouterModule, RouterLink, TogglePassword, MatIconModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    RouterLink,
+    TogglePassword,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatDialogModule,
+  ],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrl: './login.component.css',
 })
 export class LoginComponent {
-  userEmail = "";
-  password = "";
-  error = "";
+  userEmail = '';
+  password = '';
+  error = '';
 
-  constructor(private auth: AuthService, private router: Router, private toaster: ToastrService){ }
+  constructor(
+    private auth: AuthService,
+    private router: Router,
+    private toaster: ToastrService
+  ) {}
 
   login(loginForm: NgForm) {
-    this.auth.login({ useremail: this.userEmail, password: this.password })
+    this.auth
+      .login({ useremail: this.userEmail, password: this.password })
       .subscribe({
         next: (res) => {
           if (res.status) {
             localStorage.setItem('access_token', res.accessToken!);
             localStorage.setItem('refresh_token', res.refreshToken!);
-            this.toaster.success(res.message)
+            this.toaster.success(res.message);
             this.router.navigate(['/dashboard']);
             loginForm.resetForm();
           } else {
-            this.toaster.error(res.message)
+            this.toaster.error(res.message);
           }
         },
         error: () => {
           this.error = 'Login failed. Check credentials.';
-        }
+        },
       });
   }
-
 }

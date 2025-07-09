@@ -38,4 +38,9 @@ export class AuthService {
     this.toast.success("Logout success")
     this.router.navigate(['/login']);
   }
+
+  AccessDenied(){
+    this.router.navigate(['/AccessDenied']);
+  }
+
 }

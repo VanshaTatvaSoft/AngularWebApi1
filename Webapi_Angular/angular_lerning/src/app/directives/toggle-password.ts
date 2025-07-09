@@ -12,7 +12,7 @@ export class TogglePassword {
 
   constructor() {}
 
-  ngOnInit() { 
+  ngOnInit() {
     const parent = this.renderer.parentNode(this.el.nativeElement);
     this.renderer.setStyle(parent, 'position', 'relative');
 
@@ -21,8 +21,8 @@ export class TogglePassword {
     this.renderer.setProperty(this.icon, 'innerText', 'visibility_off');
     this.renderer.setStyle(this.icon, 'cursor', 'pointer');
     this.renderer.setStyle(this.icon, 'position', 'absolute');
-    this.renderer.setStyle(this.icon, 'top', '73%');
-    this.renderer.setStyle(this.icon, 'right', '10px');
+    this.renderer.setStyle(this.icon, 'top', '54%');
+    this.renderer.setStyle(this.icon, 'right', '2px');
     this.renderer.setStyle(this.icon, 'transform', 'translateY(-50%)');
     this.renderer.setStyle(this.icon, 'color', '#757575');
 

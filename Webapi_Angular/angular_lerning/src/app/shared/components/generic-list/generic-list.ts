@@ -30,6 +30,7 @@ import { DialogRef } from '@angular/cdk/dialog';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { GenericBtn } from '../generic-btn/generic-btn';
 
 @Component({
   selector: 'app-generic-list',
@@ -46,6 +47,7 @@ import { MatInputModule } from '@angular/material/input';
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
+    GenericBtn
   ],
   templateUrl: './generic-list.html',
   styleUrl: './generic-list.css',

@@ -1,38 +1,63 @@
 <form [formGroup]="form" class="p-3" (ngSubmit)="submit()">
   <h4>{{ isEditMode ? 'Edit Product' : 'Add Product' }}</h4>
-  <div class="mb-3">
-    <label>Name</label>
-    <input type="hidden" formControlName="id">
-    <input class="form-control" formControlName="productname">
-    <div class="text-danger" *ngIf="form.get('productname')?.touched && form.get('productname')?.invalid">
+  <input type="hidden" formControlName="id">
+
+  <mat-form-field class="w-100 mb-3">
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="productname" />
+    <mat-error *ngIf="form.get('productname')?.touched && form.get('productname')?.invalid">
       Product name is required.
-    </div>
-  </div>
-  <div class="mb-3">
-    <label>Description</label>
-    <input class="form-control" formControlName="productdesc">
-    <div class="text-danger" *ngIf="form.get('productdesc')?.touched && form.get('productdesc')?.invalid">
+    </mat-error>
+  </mat-form-field>
+
+  <!-- <mat-form-field class="w-100 mb-3">
+    <mat-label>Description</mat-label>
+    <input matInput formControlName="productdesc" />
+    <mat-error *ngIf="form.get('productdesc')?.touched && form.get('productdesc')?.invalid">
       Product description is required.
-    </div>
-  </div>
-  <div class="mb-3">
-    <label>Price</label>
-    <input type="number" class="form-control" formControlName="productprice">
-    <div class="text-danger" *ngIf="form.get('productprice')?.touched && form.get('productprice')?.invalid">
-      <div *ngIf="form.get('productprice')?.errors?.['required']">Price is required.</div>
-      <div *ngIf="form.get('productprice')?.errors?.['min']">Price must be at least 1.</div>
-    </div>
-  </div>
-  <div class="mb-3">
-    <label>Quantity</label>
-    <input type="number" class="form-control" formControlName="productquantity">
-    <div class="text-danger" *ngIf="form.get('productquantity')?.touched && form.get('productquantity')?.invalid">
-      <div *ngIf="form.get('productquantity')?.errors?.['required']">Quantity is required.</div>
-      <div *ngIf="form.get('productquantity')?.errors?.['min']">Quantity must be at least 1.</div>
-    </div>
-  </div>
-  <div class="text-end">
-    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Add</button>
-    <button type="button" class="btn btn-secondary ms-2" (click)="close()">Cancel</button>
+    </mat-error>
+  </mat-form-field> -->
+
+  <mat-form-field class="w-100 mb-3">
+    <mat-label>Textarea</mat-label>
+    <textarea matInput formControlName="productdesc"></textarea>
+    <mat-error *ngIf="form.get('productdesc')?.touched && form.get('productdesc')?.invalid">
+      Product description is required.
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="w-100 mb-3">
+    <mat-label>Price</mat-label>
+    <input matInput type="number" formControlName="productprice" />
+    <mat-error *ngIf="form.get('productprice')?.touched && form.get('productprice')?.invalid">
+      <span *ngIf="form.get('productprice')?.errors?.['required']">Price is required.</span>
+      <span *ngIf="form.get('productprice')?.errors?.['min']">Price must be at least 1.</span>
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="w-100 mb-3">
+    <mat-label>Quantity</mat-label>
+    <input matInput type="number" formControlName="productquantity" />
+    <mat-error *ngIf="form.get('productquantity')?.touched && form.get('productquantity')?.invalid">
+      <span *ngIf="form.get('productquantity')?.errors?.['required']">Quantity is required.</span>
+      <span *ngIf="form.get('productquantity')?.errors?.['min']">Quantity must be at least 1.</span>
+    </mat-error>
+  </mat-form-field>
+
+  <div class="text-end mt-3">
+    <app-generic-btn
+          [label]="isEditMode ? 'Update' : 'Add'"
+          [color]="'primary'"
+          [type]="'submit'"
+          [variant]="'mat-raised-button'"
+          [matBtnType]="'filled'"
+          [disabled]="form.invalid"
+          class="me-2"
+        >
+        </app-generic-btn>
+    <!-- <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+      {{ isEditMode ? 'Update' : 'Add' }}
+    </button> -->
+    <button mat-stroked-button color="warn" type="button" class="ms-2" (click)="close()">Cancel</button>
   </div>
 </form>

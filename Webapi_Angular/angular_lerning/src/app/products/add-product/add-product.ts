@@ -1,17 +1,38 @@
 import { CommonModule } from '@angular/common';
 import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ProductService } from '../services/product';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { Alert } from '../../shared/services/alert';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { GenericBtn } from '../../shared/components/generic-btn/generic-btn';
 
 @Component({
   selector: 'app-add-product',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatDialogModule,
+    GenericBtn
+  ],
   templateUrl: './add-product.html',
-  styleUrl: './add-product.css'
+  styleUrl: './add-product.css',
 })
 export class AddProduct {
   form: FormGroup;
@@ -57,7 +78,7 @@ export class AddProduct {
             this.toaster.error(res.message);
           }
         },
-        error: () => this.toaster.error('Error adding product.')
+        error: () => this.toaster.error('Error adding product.'),
       });
     }
   }
@@ -65,5 +86,4 @@ export class AddProduct {
   close(): void {
     this.dialogRef.close(true);
   }
-
 }

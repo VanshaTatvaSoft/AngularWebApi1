@@ -47,6 +47,9 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
           })
         );
       }
+      if( error.status === 403){
+        authService.AccessDenied();
+      }
       if (error.status === 401) {
         authService.logout();
       }
