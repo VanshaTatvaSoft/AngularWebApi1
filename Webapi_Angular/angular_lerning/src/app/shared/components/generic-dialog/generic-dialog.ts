@@ -23,7 +23,7 @@ export class GenericDialog {
     this.injector = Injector.create({
       providers: [
         { provide: MatDialogRef, useValue: dialogRef },
-        { provide: MAT_DIALOG_DATA, useValue: null }
+        { provide: MAT_DIALOG_DATA, useValue: data.formData || null }
       ],
       parent: parentInjector
     });

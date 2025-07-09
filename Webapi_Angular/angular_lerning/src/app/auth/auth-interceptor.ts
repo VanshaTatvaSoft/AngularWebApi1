@@ -20,7 +20,8 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
 
   return next(authReq).pipe(
     catchError((error: HttpErrorResponse) => {
-      if(error.status === 401){
+      const isTokenExpired = error.status === 401 && error.headers.get('Token-Expired')?.includes('true');
+      if(isTokenExpired){
         const refreshToken = localStorage.getItem('refresh_token');
         if (!refreshToken) {
           authService.logout();
@@ -45,6 +46,9 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
             return throwError(() => error);
           })
         );
+      }
+      if (error.status === 401) {
+        authService.logout();
       }
       return throwError(() => error);
     })

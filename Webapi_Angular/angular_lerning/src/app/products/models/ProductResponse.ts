@@ -4,4 +4,5 @@ export interface ProductResponse {
   status: boolean;
   message: string;
   products: Product[];
+  totalCount: number
 }

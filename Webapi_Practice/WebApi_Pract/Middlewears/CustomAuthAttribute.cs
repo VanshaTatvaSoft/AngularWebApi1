@@ -27,10 +27,8 @@ public class CustomAuthAttribute(string roles) : Attribute, IAuthorizationFilter
             JwtSecurityTokenHandler handler = new();
             ClaimsPrincipal principal = handler.ValidateToken(token, new TokenValidationParameters
             {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidIssuer = cfg["Jwt:Issuer"],
-                ValidAudience = cfg["Jwt:Audience"],
+                ValidateIssuer = false,
+                ValidateAudience = false,
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(key),
                 ValidateLifetime = true,
@@ -46,6 +44,13 @@ public class CustomAuthAttribute(string roles) : Attribute, IAuthorizationFilter
             }
 
             context.HttpContext.User = principal;
+        }
+        catch (SecurityTokenExpiredException)
+        {
+            context.HttpContext.Response.Headers.Append("Token-Expired", "true");
+            context.HttpContext.Response.Headers.Append("Access-Control-Expose-Headers", "Token-Expired");
+
+            context.Result = new UnauthorizedResult();
         }
         catch (Exception)
         {

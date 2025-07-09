@@ -1,19 +1,35 @@
 <form [formGroup]="form" class="p-3" (ngSubmit)="submit()">
+  <h4>{{ isEditMode ? 'Edit Product' : 'Add Product' }}</h4>
   <div class="mb-3">
     <label>Name</label>
+    <input type="hidden" formControlName="id">
     <input class="form-control" formControlName="productname">
+    <div class="text-danger" *ngIf="form.get('productname')?.touched && form.get('productname')?.invalid">
+      Product name is required.
+    </div>
   </div>
   <div class="mb-3">
     <label>Description</label>
     <input class="form-control" formControlName="productdesc">
+    <div class="text-danger" *ngIf="form.get('productdesc')?.touched && form.get('productdesc')?.invalid">
+      Product description is required.
+    </div>
   </div>
   <div class="mb-3">
     <label>Price</label>
     <input type="number" class="form-control" formControlName="productprice">
+    <div class="text-danger" *ngIf="form.get('productprice')?.touched && form.get('productprice')?.invalid">
+      <div *ngIf="form.get('productprice')?.errors?.['required']">Price is required.</div>
+      <div *ngIf="form.get('productprice')?.errors?.['min']">Price must be at least 1.</div>
+    </div>
   </div>
   <div class="mb-3">
     <label>Quantity</label>
     <input type="number" class="form-control" formControlName="productquantity">
+    <div class="text-danger" *ngIf="form.get('productquantity')?.touched && form.get('productquantity')?.invalid">
+      <div *ngIf="form.get('productquantity')?.errors?.['required']">Quantity is required.</div>
+      <div *ngIf="form.get('productquantity')?.errors?.['min']">Quantity must be at least 1.</div>
+    </div>
   </div>
   <div class="text-end">
     <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Add</button>

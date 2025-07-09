@@ -11,8 +11,14 @@ export class ProductService {
 
   constructor(private http: HttpClient) {}
 
-  getProducts(): Observable<ProductResponse> {
-    return this.http.get<ProductResponse>(`${this.apiUrl}/products`);
+  getProducts(pageNumber= 1 , pageSize = 5 ,searchCriteria: string | null = ""): Observable<ProductResponse> {
+    return this.http.get<ProductResponse>(`${this.apiUrl}/products`,
+      {
+        params: {
+        pageNumber: pageNumber.toString() ,
+        pageSize : pageSize.toString(),
+        searchCriteria : searchCriteria ?? ""}
+      });
   }
 
   addProduct(product: any) {
@@ -21,9 +27,16 @@ export class ProductService {
     formData.append('Productdesc', product.productdesc);
     formData.append('Productprice', product.productprice.toString());
     formData.append('Productquantity', product.productquantity.toString());
-    return this.http.post<any>(
-      `${this.apiUrl}/products`,
-      formData
-    );
+    return this.http.post<any>(`${this.apiUrl}/products`, formData);
+  }
+
+  updateProduct(product: any) {
+    const formData = new FormData();
+    formData.append('Id', product.id);
+    formData.append('Productname', product.productname);
+    formData.append('Productdesc', product.productdesc);
+    formData.append('Productprice', product.productprice.toString());
+    formData.append('Productquantity', product.productquantity.toString());
+    return this.http.put<any>(`${this.apiUrl}/products`, formData);
   }
 }

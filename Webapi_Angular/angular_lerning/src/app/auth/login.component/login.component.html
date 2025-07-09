@@ -17,7 +17,7 @@
 
             <div class="mb-3">
               <label for="password" class="form-label">Password</label>
-              <input type="password" id="password" class="form-control" [(ngModel)]="password" name="password" required #passwordRef="ngModel">
+              <input type="password" id="password" class="form-control" [(ngModel)]="password" name="password" required #passwordRef="ngModel" appTogglePassword>
               <div class="text-danger mt-1" *ngIf="passwordRef.invalid && passwordRef.touched">
                 <small *ngIf="passwordRef.errors?.['required']">Password is required.</small>
               </div>

@@ -4,5 +4,11 @@
 [data]="products"
 [columns]="columns"
 [addComponent]="addComponent"
+[totalCount]="totalCount"
+[pageNumber]=" pageNumber"
+[pageSize]="pageSize"
+(refresh)="loadProducts()"
+(search)="onSearch($event)"
+(pageChange)="onPageChange($event)"
 >
 </app-generic-list>

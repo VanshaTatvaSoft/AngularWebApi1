@@ -3,11 +3,14 @@ import { AuthService } from '../auth.service';
 import { Router, RouterLink, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
+import { TogglePassword } from '../../directives/toggle-password';
+import { MatIconModule } from '@angular/material/icon';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login.component',
   standalone: true,
-  imports: [CommonModule, FormsModule , RouterModule, RouterLink],
+  imports: [CommonModule, FormsModule , RouterModule, RouterLink, TogglePassword, MatIconModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -16,7 +19,7 @@ export class LoginComponent {
   password = "";
   error = "";
 
-  constructor(private auth: AuthService, private router: Router){ }
+  constructor(private auth: AuthService, private router: Router, private toaster: ToastrService){ }
 
   login(loginForm: NgForm) {
     this.auth.login({ useremail: this.userEmail, password: this.password })
@@ -25,10 +28,11 @@ export class LoginComponent {
           if (res.status) {
             localStorage.setItem('access_token', res.accessToken!);
             localStorage.setItem('refresh_token', res.refreshToken!);
+            this.toaster.success(res.message)
             this.router.navigate(['/dashboard']);
             loginForm.resetForm();
           } else {
-            this.error = res.message;
+            this.toaster.error(res.message)
           }
         },
         error: () => {

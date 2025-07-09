@@ -81,7 +81,7 @@ public class UserLoginController(WebApiPractContext context, IConfiguration conf
             AccessToken = GenerateAccessToken(user),
             RefreshToken = GenerateRefreshToken(user)
         });
-    } 
+    }
     #endregion
 
     #region Refresh
@@ -121,7 +121,7 @@ public class UserLoginController(WebApiPractContext context, IConfiguration conf
         {
             return Unauthorized("Invalid refresh token.");
         }
-    }        
+    }
     #endregion
 
     #region Jwt
@@ -129,7 +129,7 @@ public class UserLoginController(WebApiPractContext context, IConfiguration conf
     {
         Claim[] claims =
         [
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),  
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(ClaimTypes.Name, user.Username),
             new Claim(ClaimTypes.Email, user.Email),
             new Claim(ClaimTypes.Role, user.Role.Rolename)
@@ -153,7 +153,7 @@ public class UserLoginController(WebApiPractContext context, IConfiguration conf
     {
         Claim[] claims =
         [
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),  
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(ClaimTypes.Name, user.Username),
             new Claim(ClaimTypes.Role, user.Role.Rolename)
         ];
@@ -172,5 +172,4 @@ public class UserLoginController(WebApiPractContext context, IConfiguration conf
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
     #endregion
-
 }

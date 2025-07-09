@@ -1,17 +1,24 @@
 <div class="container mt-4">
-  <div class="d-flex justify-content-between">
+  <div class="d-flex justify-content-between mb-2">
     <div>
       <h4 *ngIf="title">{{ title }}</h4>
     </div>
-    <div>
-      <button matFab extended (click)="openAddDialog()">
-        <mat-icon>add</mat-icon>
-        {{ addBtn }}
-      </button>
+    <div class="d-flex justify-content-center align-items-center">
+      <mat-form-field appearance="outline" class="me-2" floatLabel="auto">
+        <mat-label>Search</mat-label>
+        <input matInput placeholder="Search" (keyup)="onSearch($event)">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+      <div>
+        <button matFab extended class="btn btn-sm" (click)="openAddDialog()">
+          <mat-icon>add</mat-icon>
+          {{ addBtn }}
+        </button>
+      </div>
     </div>
   </div>
 
-  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 mat-table" *ngIf="data.length">
+  <table mat-table [dataSource]="data" matSort class="mat-elevation-z8 mat-table" *ngIf="data.length">
     <ng-container *ngFor="let col of columns" [matColumnDef]="col.key">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ col.header }}</th>
       <td mat-cell *matCellDef="let row">{{ row[col.key] }}</td>
@@ -20,11 +27,10 @@
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef>Actions</th>
       <td mat-cell *matCellDef="let row">
-        <!-- You can replace (click) handlers as needed -->
-        <button matFab aria-label="Example icon button with a delete icon" class="me-2 my-1">
+        <button matFab aria-label="Example icon button with a delete icon" class="me-2 my-1 btn btn-sm"  (click)="openEditDialog(row)">
           <mat-icon>edit</mat-icon>
         </button>
-        <button matFab aria-label="Example icon button with a delete icon" class="me-2 my-1">
+        <button matFab aria-label="Example icon button with a delete icon" class="me-2 my-1 btn btn-sm">
           <mat-icon>delete</mat-icon>
         </button>
       </td>
@@ -34,7 +40,13 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
 
-  <mat-paginator [length]="data.length" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]">
+  <mat-paginator
+  [length]="totalCount"
+  [pageSize]="pageSize"
+  [pageIndex]="pageNumber-1"
+  [pageSizeOptions]="[5, 10, 20]"
+  (page)="pageChange.emit($event)"
+  >
   </mat-paginator>
 
   <div *ngIf="!data.length" class="text-center text-muted">No data available.</div>

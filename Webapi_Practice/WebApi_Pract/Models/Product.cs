@@ -27,4 +27,7 @@ public partial class Product
 
     [Column("productquantity")]
     public int Productquantity { get; set; }
+
+    [Column("isdeleted")]
+    public bool Isdeleted { get; set; }
 }

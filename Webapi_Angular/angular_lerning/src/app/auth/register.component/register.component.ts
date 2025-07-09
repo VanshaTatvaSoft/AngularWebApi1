@@ -3,6 +3,7 @@ import { AuthService } from '../auth.service';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register.component',
@@ -15,7 +16,7 @@ export class RegisterComponent {
   registerForm!: FormGroup;
   error = '';
 
-  constructor(private fb: FormBuilder, private auth: AuthService, private router: Router) {}
+  constructor(private fb: FormBuilder, private auth: AuthService, private router: Router, private toaster: ToastrService) {}
 
   ngOnInit(): void{
     this.registerForm = this.fb.group({
@@ -39,10 +40,11 @@ export class RegisterComponent {
     this.auth.register(formData).subscribe({
       next: (res) => {
         if(res.status){
+          this.toaster.success(res.message);
           this.router.navigate(['/login']);
         }
         else{
-          this.error = res.message
+          this.toaster.error(res.message);
         }
       },
       error: () => {
@@ -56,7 +58,7 @@ export class RegisterComponent {
     if (!control || !control.errors) return [];
 
     const errors: string[] = [];
-    
+
     if (control.errors['required']) errors.push('Password is required.');
     if (control.errors['minlength']) errors.push('Minimum 8 characters required.');
     if (control.errors['pattern']) {
