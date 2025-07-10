@@ -10,6 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
+import { Storage } from '../../shared/services/storage';
 
 @Component({
   selector: 'app-login.component',
@@ -37,7 +38,8 @@ export class LoginComponent {
   constructor(
     private auth: AuthService,
     private router: Router,
-    private toaster: ToastrService
+    private toaster: ToastrService,
+    private storageService: Storage
   ) {}
 
   login(loginForm: NgForm) {
@@ -45,9 +47,12 @@ export class LoginComponent {
       .login({ useremail: this.userEmail, password: this.password })
       .subscribe({
         next: (res) => {
+          debugger
           if (res.status) {
-            localStorage.setItem('access_token', res.accessToken!);
-            localStorage.setItem('refresh_token', res.refreshToken!);
+            this.storageService.setItem('access_token',  res.accessToken!);
+            this.storageService.setItem('refresh_token', res.refreshToken!);
+            // localStorage.setItem('access_token', res.accessToken!);
+            // localStorage.setItem('refresh_token', res.refreshToken!);
             this.toaster.success(res.message);
             this.router.navigate(['/dashboard']);
             loginForm.resetForm();

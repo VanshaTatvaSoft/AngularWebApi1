@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
+import { Storage } from './shared/services/storage';
 
 @Component({
   selector: 'app-root',
@@ -12,9 +13,9 @@ import { Router, RouterModule, RouterOutlet } from '@angular/router';
 export class App {
   protected title = 'angular_lerning';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private strorageSevice: Storage) {}
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('access_token');
+    return !!this.strorageSevice.getItem('access_token');
   }
 }

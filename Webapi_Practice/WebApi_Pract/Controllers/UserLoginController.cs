@@ -106,7 +106,8 @@ public class UserLoginController(WebApiPractContext context, IConfiguration conf
             }, out _);
 
             String username = principal.Identity?.Name;
-            User user = await _context.Users.Include(r => r.Role).FirstOrDefaultAsync(u => u.Username == username);
+            string userId = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            User user = await _context.Users.Include(r => r.Role).FirstOrDefaultAsync(u => u.Id == Int32.Parse(userId));
             if (user == null) return Unauthorized();
 
             return Ok(new

@@ -27,6 +27,6 @@ export const routes: Routes = [
       { path: 'products', component: Products, canActivate: [authGaurdGuard] }
     ]
   },
-  { path: '**', component: NotFound },
-  { path: 'AccessDenied', component: Forbiden }
+  { path: 'AccessDenied', component: Forbiden },
+  { path: '**', component: NotFound }
 ];

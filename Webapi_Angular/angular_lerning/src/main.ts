@@ -1,5 +1,5 @@
-import { provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
-import { bootstrapApplication } from '@angular/platform-browser';
+import { provideHttpClient, withFetch, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
+import { bootstrapApplication, provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
 import { App } from './app/app';
 import { routes } from './app/app.routes';
@@ -22,5 +22,6 @@ bootstrapApplication(App, {
       closeButton: true,
       progressBar: true
     }),
+    provideClientHydration(withEventReplay()),
   ]
 });

@@ -3,16 +3,18 @@ import { AuthService } from './auth.service';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, switchMap, throwError } from 'rxjs';
+import { Storage } from '../shared/services/storage';
 
 export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: HttpHandlerFn) => {
   const authService = inject(AuthService);
   const router = inject(Router);
+  const storageSevice = inject(Storage);
 
   if ( req.url.endsWith('/login') || req.url.endsWith('/register') || req.url.endsWith('/refresh')) {
     return next(req);
   }
 
-  const accessToken = localStorage.getItem('access_token');
+  const accessToken = storageSevice.getItem('access_token');
 
   const authReq = accessToken
     ? req.clone({ setHeaders: { Authorization: `Bearer ${accessToken}` } })
@@ -22,7 +24,7 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
     catchError((error: HttpErrorResponse) => {
       const isTokenExpired = error.status === 401 && error.headers.get('Token-Expired')?.includes('true');
       if(isTokenExpired){
-        const refreshToken = localStorage.getItem('refresh_token');
+        const refreshToken = storageSevice.getItem('refresh_token');
         if (!refreshToken) {
           authService.logout();
           return throwError(() => error);
@@ -30,8 +32,10 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
 
         return authService.refreshToken(refreshToken).pipe(
           switchMap((res: any) => {
-            localStorage.setItem('access_token', res.accessToken);
-            localStorage.setItem('refresh_token', res.refreshToken);
+            storageSevice.setItem('access_token', res.accessToken)
+            storageSevice.setItem('refresh_token', res.refreshToken)
+            // localStorage.setItem('access_token', res.accessToken);
+            // localStorage.setItem('refresh_token', res.refreshToken);
 
             const retryReq = req.clone({
               setHeaders: {
