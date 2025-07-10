@@ -5,14 +5,31 @@ import { TokenResponse } from './models/token-response.model';
 import { RegisterModel } from './models/register.model';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Storage } from '../shared/services/storage';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private apiUrl = 'http://localhost:5131/api/UserLogin';
+  private userNameSubject = new BehaviorSubject<string>('');
+  userName$ = this.userNameSubject.asObservable();
 
-  constructor(private http: HttpClient, private router: Router, private toast: ToastrService) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private toast: ToastrService,
+    private storage: Storage
+  ) {}
+
+  setUserName(name: string) {
+    this.userNameSubject.next(name);
+  }
+
+  getUserName(): string {
+    return this.userNameSubject.getValue();
+  }
 
   login(data: LoginModel) {
     const formData = new FormData();
@@ -35,12 +52,15 @@ export class AuthService {
 
   logout() {
     localStorage.clear();
-    this.toast.success("Logout success")
+    this.toast.success('Logout success');
     this.router.navigate(['/login']);
   }
 
-  AccessDenied(){
+  AccessDenied() {
     this.router.navigate(['/AccessDenied']);
   }
 
+  getAccessToken(): string | null {
+    return this.storage.getItem('access_token');
+  }
 }

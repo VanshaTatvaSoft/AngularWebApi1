@@ -35,7 +35,6 @@ export class Products implements OnInit {
     this.productService.getProducts(this.pageNumber , this.pageSize, this.searchText).subscribe({
       next: (res) => {
         console.log(res);
-        console.log(res);
         if (res.status) {
           this.products = res.products;
           this.totalCount = res.totalCount;

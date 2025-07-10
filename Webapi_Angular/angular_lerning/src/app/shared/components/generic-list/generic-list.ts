@@ -67,22 +67,8 @@ export class GenericList {
 
   constructor(private dialog: MatDialog, private injector: Injector) {}
 
-  // dataSource = new MatTableDataSource<any>();
-  // pageSize: number = 5;
-
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-
-  // ngOnChanges(changes: SimpleChanges): void {
-  //   if (changes['data'] && this.data) {
-  //     this.dataSource = new MatTableDataSource(this.data);
-
-  //     setTimeout(() => {
-  //       this.dataSource.paginator = this.paginator;
-  //       this.dataSource.sort = this.sort;
-  //     });
-  //   }
-  // }
 
   get displayedColumns(): string[] {
     return [...this.columns.map((c) => c.key), 'actions'];

@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Storage } from '../../shared/services/storage';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-main-layout.component',
@@ -11,13 +12,16 @@ import { Storage } from '../../shared/services/storage';
   styleUrl: './main-layout.component.css'
 })
 export class MainLayoutComponent {
-  constructor(private router: Router, private toast: ToastrService, private storageService: Storage) {}
+  userName = '';
+  constructor(private router: Router, private toast: ToastrService, private storageService: Storage,private auth: AuthService) {
+    this.auth.userName$.subscribe(name => {
+      this.userName = name;
+    });
+  }
 
   logout(): void {
     this.storageService.removeItem('access_token');
     this.storageService.removeItem('refresh_token');
-    // localStorage.removeItem('access_token');
-    // localStorage.removeItem('refresh_token');
     this.toast.success("Logout success")
     this.router.navigate(['/login']);
   }

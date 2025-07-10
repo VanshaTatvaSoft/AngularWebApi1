@@ -8,6 +8,7 @@ import { MainLayoutComponent } from './layouts/main-layout.component/main-layout
 import { Products } from './products/products';
 import { NotFound } from './error/not-found/not-found';
 import { Forbiden } from './error/forbiden/forbiden';
+import { roleGuard } from './shared/guards/role-guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -16,17 +17,27 @@ export const routes: Routes = [
     component: LoginLayoutComponent,
     children: [
       { path: 'login', component: LoginComponent },
-      { path: 'register', component: RegisterComponent }
-    ]
+      { path: 'register', component: RegisterComponent },
+    ],
   },
   {
     path: '',
     component: MainLayoutComponent,
     children: [
-      { path: 'dashboard', component: Dashboard, canActivate: [authGaurdGuard] },
-      { path: 'products',  loadComponent: () => import('./products/products').then(m => m.Products), canActivate: [authGaurdGuard] }
-    ]
+      {
+        path: 'dashboard',
+        component: Dashboard,
+        canActivate: [authGaurdGuard],
+      },
+      {
+        path: 'products',
+        loadComponent: () =>
+          import('./products/products').then((m) => m.Products),
+        canActivate: [authGaurdGuard, roleGuard],
+        data: { roles: ['Admin'] }
+      },
+    ],
   },
   { path: 'AccessDenied', component: Forbiden },
-  { path: '**', component: NotFound }
+  { path: '**', component: NotFound },
 ];

@@ -34,9 +34,6 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
           switchMap((res: any) => {
             storageSevice.setItem('access_token', res.accessToken)
             storageSevice.setItem('refresh_token', res.refreshToken)
-            // localStorage.setItem('access_token', res.accessToken);
-            // localStorage.setItem('refresh_token', res.refreshToken);
-
             const retryReq = req.clone({
               setHeaders: {
                 Authorization: `Bearer ${res.accessToken}`

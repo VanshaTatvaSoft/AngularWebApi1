@@ -11,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { Storage } from '../../shared/services/storage';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-login.component',
@@ -34,6 +35,7 @@ export class LoginComponent {
   userEmail = '';
   password = '';
   error = '';
+  subject$ = new Subject<string>();
 
   constructor(
     private auth: AuthService,
@@ -50,8 +52,7 @@ export class LoginComponent {
           if (res.status) {
             this.storageService.setItem('access_token',  res.accessToken!);
             this.storageService.setItem('refresh_token', res.refreshToken!);
-            // localStorage.setItem('access_token', res.accessToken!);
-            // localStorage.setItem('refresh_token', res.refreshToken!);
+            this.auth.setUserName(res.userName);
             this.toaster.success(res.message);
             this.router.navigate(['/dashboard']);
             loginForm.resetForm();

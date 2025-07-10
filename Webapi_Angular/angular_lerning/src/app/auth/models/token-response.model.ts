@@ -3,4 +3,5 @@ export interface TokenResponse {
   message: string;
   accessToken: string | null;
   refreshToken: string | null;
+  userName: string
 }

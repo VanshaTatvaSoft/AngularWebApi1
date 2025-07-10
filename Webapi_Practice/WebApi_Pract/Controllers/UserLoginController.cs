@@ -79,7 +79,8 @@ public class UserLoginController(WebApiPractContext context, IConfiguration conf
             Status = true,
             Message = "User login successfully",
             AccessToken = GenerateAccessToken(user),
-            RefreshToken = GenerateRefreshToken(user)
+            RefreshToken = GenerateRefreshToken(user),
+            UserName = user.Username
         });
     }
     #endregion
