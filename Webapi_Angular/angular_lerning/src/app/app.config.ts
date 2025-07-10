@@ -10,7 +10,7 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideAnimations(), // ✅ required for Toastr
-    importProvidersFrom(ToastrModule.forRoot()), // ✅ adds ToastConfig provider
+    provideAnimations(),
+    importProvidersFrom(ToastrModule.forRoot()),
   ]
 };

@@ -47,7 +47,6 @@ export class LoginComponent {
       .login({ useremail: this.userEmail, password: this.password })
       .subscribe({
         next: (res) => {
-          debugger
           if (res.status) {
             this.storageService.setItem('access_token',  res.accessToken!);
             this.storageService.setItem('refresh_token', res.refreshToken!);

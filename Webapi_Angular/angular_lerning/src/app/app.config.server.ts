@@ -10,8 +10,8 @@ const serverConfig: ApplicationConfig = {
   providers: [
     provideServerRendering(withRoutes(serverRoutes)),
     provideHttpClient(),
-    provideAnimations(), // ✅ required for Toastr
-    importProvidersFrom(ToastrModule.forRoot()), // ✅ adds ToastConfig provider
+    provideAnimations(),
+    importProvidersFrom(ToastrModule.forRoot()),
   ]
 };
 

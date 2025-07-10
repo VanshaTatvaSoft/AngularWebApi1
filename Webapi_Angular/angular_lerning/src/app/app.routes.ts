@@ -24,7 +24,7 @@ export const routes: Routes = [
     component: MainLayoutComponent,
     children: [
       { path: 'dashboard', component: Dashboard, canActivate: [authGaurdGuard] },
-      { path: 'products', component: Products, canActivate: [authGaurdGuard] }
+      { path: 'products',  loadComponent: () => import('./products/products').then(m => m.Products), canActivate: [authGaurdGuard] }
     ]
   },
   { path: 'AccessDenied', component: Forbiden },
