@@ -45,6 +45,24 @@ public class ProductController(WebApiPractContext context) : ControllerBase
     }
     #endregion
 
+    #region Name
+    [HttpGet("search")]
+    public async Task<IActionResult> SearchProduct([FromQuery] string query)
+    {
+        if (string.IsNullOrWhiteSpace(query))
+            return Ok(Array.Empty<string>());
+
+        List<string> suggestions = await _context.Products
+                            .Where(p => p.Productname.ToLower().StartsWith(query.ToLower()))
+                            .OrderBy(p => p.Productname)
+                            .Select(p => p.Productname)
+                            .Take(7)
+                            .ToListAsync();
+
+        return Ok(suggestions);
+    }
+    #endregion
+
     #region AddProduct
     [HttpPost("products")]
     public async Task<IActionResult> AddProduct([FromForm] ProductDTO productDTO)

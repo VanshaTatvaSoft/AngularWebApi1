@@ -1,14 +1,16 @@
-<app-generic-list
-[title]="'Product List'"
-[addBtn]="'Add Product'"
-[data]="products"
-[columns]="columns"
-[addComponent]="addComponent"
-[totalCount]="totalCount"
-[pageNumber]=" pageNumber"
-[pageSize]="pageSize"
-(refresh)="loadProducts()"
-(search)="onSearch($event)"
-(pageChange)="onPageChange($event)"
->
-</app-generic-list>
+<ng-container *ngIf="products | async as products">
+  <app-generic-list
+  [title]="'Product List'"
+  [addBtn]="'Add Product'"
+  [data]="products"
+  [columns]="columns"
+  [addComponent]="addComponent"
+  [totalCount]="totalCount"
+  [pageNumber]=" pageNumber"
+  [pageSize]="pageSize"
+  (refresh)="loadProducts()"
+  (search)="onSearch($event)"
+  (pageChange)="onPageChange($event)"
+  >
+  </app-generic-list>
+</ng-container>

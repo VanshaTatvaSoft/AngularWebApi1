@@ -11,7 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { Storage } from '../../shared/services/storage';
-import { Subject } from 'rxjs';
+import { catchError, map, of, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-login.component',
@@ -45,12 +45,32 @@ export class LoginComponent {
   ) {}
 
   login(loginForm: NgForm) {
+    // this.auth
+    //   .login({ useremail: this.userEmail, password: this.password })
+    //   .subscribe({
+    //     next: (res) => {
+    //       if (res.status) {
+    //         this.storageService.setItem('access_token',  res.accessToken!);
+    //         this.storageService.setItem('refresh_token', res.refreshToken!);
+    //         this.auth.setUserName(res.userName);
+    //         this.toaster.success(res.message);
+    //         this.router.navigate(['/dashboard']);
+    //         loginForm.resetForm();
+    //       } else {
+    //         this.toaster.error(res.message);
+    //       }
+    //     },
+    //     error: () => {
+    //       this.error = 'Login failed. Check credentials.';
+    //     },
+    //   });
+
     this.auth
       .login({ useremail: this.userEmail, password: this.password })
-      .subscribe({
-        next: (res) => {
+      .pipe(
+        map((res) => {
           if (res.status) {
-            this.storageService.setItem('access_token',  res.accessToken!);
+            this.storageService.setItem('access_token', res.accessToken!);
             this.storageService.setItem('refresh_token', res.refreshToken!);
             this.auth.setUserName(res.userName);
             this.toaster.success(res.message);
@@ -59,10 +79,12 @@ export class LoginComponent {
           } else {
             this.toaster.error(res.message);
           }
-        },
-        error: () => {
+        }),
+        catchError(() => {
           this.error = 'Login failed. Check credentials.';
-        },
-      });
+          return of(null);
+        })
+      )
+      .subscribe();
   }
 }

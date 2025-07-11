@@ -19,6 +19,10 @@ export class MainLayoutComponent {
     });
   }
 
+  ngOnDestroy(): void {
+    console.log('Main Layout Component destroyed');
+  }
+
   logout(): void {
     this.storageService.removeItem('access_token');
     this.storageService.removeItem('refresh_token');

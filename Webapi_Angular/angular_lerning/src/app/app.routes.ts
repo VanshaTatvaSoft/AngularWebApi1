@@ -24,11 +24,7 @@ export const routes: Routes = [
     path: '',
     component: MainLayoutComponent,
     children: [
-      {
-        path: 'dashboard',
-        component: Dashboard,
-        canActivate: [authGaurdGuard],
-      },
+      { path: 'dashboard', component: Dashboard, canActivate: [authGaurdGuard] },
       {
         path: 'products',
         loadComponent: () =>
@@ -36,6 +32,12 @@ export const routes: Routes = [
         canActivate: [authGaurdGuard, roleGuard],
         data: { roles: ['Admin'] }
       },
+      {
+        path: 'addproduct',
+        loadComponent: () =>
+          import('./products/add-products-form/add-products-form').then((m) => m.AddProductsForm),
+        canActivate: [authGaurdGuard]
+      }
     ],
   },
   { path: 'AccessDenied', component: Forbiden },

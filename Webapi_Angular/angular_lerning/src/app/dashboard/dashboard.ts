@@ -17,4 +17,7 @@ export class Dashboard {
     this.userName = this.jwt.getUserName();
     this.auth.setUserName(this.userName);
   }
+  ngOnDestroy(): void {
+    console.log('Component destroyed');
+  }
 }

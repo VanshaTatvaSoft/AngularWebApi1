@@ -37,8 +37,8 @@
               <mat-label>Select Role</mat-label>
               <mat-select formControlName="roleId">
                 <mat-option [value]="null" disabled>Select role</mat-option>
-                <mat-option value="1">User</mat-option>
-                <mat-option value="2">Admin</mat-option>
+                <mat-option value="2">User</mat-option>
+                <mat-option value="1">Admin</mat-option>
               </mat-select>
               <mat-error *ngIf="registerForm.get('roleId')?.touched && registerForm.get('roleId')?.invalid">
                 Role is required.

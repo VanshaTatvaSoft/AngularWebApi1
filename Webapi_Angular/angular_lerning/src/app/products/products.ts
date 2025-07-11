@@ -3,6 +3,7 @@ import { ProductService } from './services/product';
 import { CommonModule } from '@angular/common';
 import { GenericList } from '../shared/components/generic-list/generic-list';
 import { AddProduct } from './add-product/add-product';
+import { catchError, map, Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-products',
@@ -12,7 +13,8 @@ import { AddProduct } from './add-product/add-product';
   styleUrl: './products.css',
 })
 export class Products implements OnInit {
-  products: any[] = [];
+  // products: any[] = [];
+  products!: Observable<any[]>;
   columns = [
     { key: 'productname', header: 'Name' },
     { key: 'productdesc', header: 'Description' },
@@ -32,16 +34,32 @@ export class Products implements OnInit {
   }
 
   loadProducts(searchText: string = ''): void {
-    this.productService.getProducts(this.pageNumber , this.pageSize, this.searchText).subscribe({
-      next: (res) => {
-        console.log(res);
-        if (res.status) {
-          this.products = res.products;
+
+    // this.productService.getProducts(this.pageNumber , this.pageSize, this.searchText).subscribe({
+    //   next: (res) => {
+    //     console.log(res);
+    //     if (res.status) {
+    //       this.products = res.products;
+    //       this.totalCount = res.totalCount;
+    //     }
+    //   },
+    //   error: () => alert('Failed to load products.'),
+    // });
+
+    this.products = this.productService
+      .getProducts(this.pageNumber, this.pageSize, this.searchText)
+      .pipe(
+        map((res) => {
+          // this.products = res.products;
           this.totalCount = res.totalCount;
-        }
-      },
-      error: () => alert('Failed to load products.'),
-    });
+          return res.products
+        }),
+        catchError(() => {
+          alert('Failed to load products.');
+          return of([]);
+        })
+      );
+
   }
 
   onSearch(searchText: string): void {
@@ -50,7 +68,7 @@ export class Products implements OnInit {
     this.loadProducts();
   }
 
-  onPageChange(event: any): void{
+  onPageChange(event: any): void {
     this.pageNumber = event.pageIndex + 1;
     this.pageSize = event.pageSize;
     this.loadProducts();

@@ -16,6 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { TogglePassword } from '../../directives/toggle-password';
+import { catchError, map, of } from 'rxjs';
 
 @Component({
   selector: 'app-register.component',
@@ -29,7 +30,7 @@ import { TogglePassword } from '../../directives/toggle-password';
     MatInputModule,
     MatSelectModule,
     MatOptionModule,
-    TogglePassword
+    TogglePassword,
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
@@ -68,19 +69,35 @@ export class RegisterComponent {
 
     const formData = this.registerForm.value;
 
-    this.auth.register(formData).subscribe({
-      next: (res) => {
+    // this.auth.register(formData).subscribe({
+    //   next: (res) => {
+    //     if (res.status) {
+    //       this.toaster.success(res.message);
+    //       this.router.navigate(['/login']);
+    //     } else {
+    //       this.toaster.error(res.message);
+    //     }
+    //   },
+    //   error: () => {
+    //     this.error = 'Registration failed.';
+    //   },
+    // });
+
+    this.auth.register(formData).pipe(
+      map((res) => {
         if (res.status) {
           this.toaster.success(res.message);
           this.router.navigate(['/login']);
         } else {
           this.toaster.error(res.message);
         }
-      },
-      error: () => {
+      }),
+      catchError(() => {
         this.error = 'Registration failed.';
-      },
-    });
+        return of(null);
+      })
+    )
+    .subscribe();
   }
 
   get passwordErrors(): string[] {
