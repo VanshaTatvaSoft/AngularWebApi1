@@ -15,10 +15,13 @@ export const authGaurdGuard: CanActivateFn = (route, state) => {
 
   if (isBrowser) {
     let userName: string | null = "";
+    let userRole: string | null = "";
     const token = storageSevice.getItem('access_token');
     if (token) {
       userName = jwtService.getUserName();
+      userRole = jwtService.getUserRole() || '';
       auth.setUserName(userName);
+      auth.setUserRole(userRole);
       return true;
     } else {
       router.navigate(['/login']);

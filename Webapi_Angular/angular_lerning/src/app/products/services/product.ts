@@ -11,14 +11,17 @@ export class ProductService {
 
   constructor(private http: HttpClient) {}
 
-  getProducts(pageNumber= 1 , pageSize = 5 ,searchCriteria: string | null = ""): Observable<ProductResponse> {
+  getProducts(pageNumber= 1 , pageSize = 5 ,searchCriteria: string | null = "", minPrice = 0, maxPrice = 2147483647): Observable<ProductResponse> {
     return this.http.get<ProductResponse>(`${this.apiUrl}/products`,
       {
         params: {
         pageNumber: pageNumber.toString() ,
         pageSize : pageSize.toString(),
-        searchCriteria : searchCriteria ?? ""}
-      });
+        searchCriteria : searchCriteria ?? "",
+        minPrice: minPrice.toString(),
+        maxPrice: maxPrice.toString(),
+      }
+    });
   }
 
   addProduct(product: any) {

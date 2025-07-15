@@ -1,0 +1,7 @@
+<h2>Products</h2>
+<ul>
+  <li *ngFor="let product of signalService.products()">
+    {{ product.name }} - {{ product.price | formatCurrencyCompactPipe }}
+    <button (click)="add(product)">Add to Cart</button>
+  </li>
+</ul>

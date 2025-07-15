@@ -7,74 +7,90 @@
 
       <mat-form-field appearance="outline" class="me-2" floatLabel="auto">
         <mat-label>Search</mat-label>
-        <input matInput placeholder="Search" (keyup)="onSearch($event)">
+        <input matInput placeholder="Search" [(ngModel)]="searchText" (keyup)="onSearch($event)">
         <mat-icon matSuffix>search</mat-icon>
       </mat-form-field>
 
       <div>
-        <app-generic-btn
-          [label]="'Add Product'"
-          [icon]="'add'"
-          [color]="'primary'"
-          [type]="'button'"
-          [variant]="'mat-raised-button'"
-          [matBtnType]="'filled'"
-          (clicked)="openAddDialog()"
-        >
+        <app-generic-btn [label]="'Add Product'" [icon]="'add'" [color]="'primary'" [type]="'button'"
+          [variant]="'mat-raised-button'" [matBtnType]="'filled'" (clicked)="openAddDialog()">
         </app-generic-btn>
       </div>
 
     </div>
   </div>
 
-  <table mat-table [dataSource]="data" matSort class="mat-elevation-z8 mat-table" *ngIf="data.length">
-    <ng-container *ngFor="let col of columns" [matColumnDef]="col.key">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ col.header }}</th>
-      <td mat-cell *matCellDef="let row">{{ row[col.key] }}</td>
-    </ng-container>
+  <div>
+    <div class="d-flex justify-content-start align-items-center mb-2">
+      <mat-slider [min]="minPriceSearch" [max]="maxPriceSearch" [step]="1">
+        <input [(ngModel)]="minvalue" matSliderStartThumb />
+        <input [(ngModel)]="maxvalue" matSliderEndThumb />
+      </mat-slider>
 
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef class="text-center" style="width: 240px;">Actions</th>
-      <td mat-cell *matCellDef="let row" class="text-center">
+      <div class="d-flex justify-content-start ms-2 align-items-center">
+        <label for="minPriceInput" class="me-2">Min: ₹</label>
+        <input
+          type="number"
+          id="minPriceInput"
+          [(ngModel)]="minvalue"
+          class="form-control me-4"
+          style="width: 100px;"
+        />
 
-        <app-generic-btn
-          [label]="'Edit'"
-          [icon]="'edit'"
-          [color]="'primary'"
-          [type]="'button'"
-          [variant]="'mat-raised-button'"
-          [matBtnType]="'filled'"
-          (clicked)="openEditDialog(row)"
-          class="me-2"
-        >
+        <label for="maxPriceInput" class="me-2">Max: ₹</label>
+        <input
+          type="number"
+          id="maxPriceInput"
+          [(ngModel)]="maxvalue"
+          class="form-control"
+          style="width: 100px;"
+        />
+      </div>
+
+      <div class="ms-2">
+        <app-generic-btn [label]="'Apply filter'" [icon]="'search'" [color]="'warn'" [type]="'button'"
+        [variant]="'mat-raised-button'" [matBtnType]="'filled'" (clicked)="onApplyFilter()">
         </app-generic-btn>
+      </div>
 
-        <app-generic-btn
-          [label]="'Delete'"
-          [icon]="'delete'"
-          [color]="'accent'"
-          [type]="'button'"
-          [variant]="'mat-raised-button'"
-          [matBtnType]="'filled'"
-          class="me-2"
-        >
-        </app-generic-btn>
+    </div>
+  </div>
 
-      </td>
-    </ng-container>
+  <ng-container *ngIf="data && data.length > 0; else noDataTemplate">
+    <table mat-table [dataSource]="data" matSort class="mat-elevation-z8 mat-table" *ngIf="data.length">
+      <ng-container *ngFor="let col of columns" [matColumnDef]="col.key">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ col.header }}</th>
+        <td mat-cell *matCellDef="let row">{{ row[col.key] }}</td>
+      </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-  </table>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef class="text-center" style="width: 240px;">Actions</th>
+        <td mat-cell *matCellDef="let row" class="text-center">
 
-  <mat-paginator
-  [length]="totalCount"
-  [pageSize]="pageSize"
-  [pageIndex]="pageNumber-1"
-  [pageSizeOptions]="[5, 10, 20]"
-  (page)="pageChange.emit($event)"
-  >
-  </mat-paginator>
+          <app-generic-btn [label]="'Edit'" [icon]="'edit'" [color]="'primary'" [type]="'button'"
+            [variant]="'mat-raised-button'" [matBtnType]="'filled'" (clicked)="openEditDialog(row)" class="me-2">
+          </app-generic-btn>
 
-  <div *ngIf="!data.length" class="text-center text-muted">No data available.</div>
+          <app-generic-btn [label]="'Delete'" [icon]="'delete'" [color]="'accent'" [type]="'button'"
+            [variant]="'mat-raised-button'" [matBtnType]="'filled'" class="me-2">
+          </app-generic-btn>
+
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+    </table>
+
+    <mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageIndex]="pageNumber-1"
+      [pageSizeOptions]="[5, 10, 20]" (page)="pageChange.emit($event)">
+    </mat-paginator>
+  </ng-container>
+
+
+  <ng-template #noDataTemplate>
+    <div *ngIf="!data || data.length === 0" class="text-center text-muted">No data available.</div>
+  </ng-template>
+
 </div>

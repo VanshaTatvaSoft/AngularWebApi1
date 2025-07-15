@@ -4,6 +4,7 @@ import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Storage } from '../../shared/services/storage';
 import { AuthService } from '../../auth/auth.service';
+import { roleGuard } from '../../shared/guards/role-guard';
 
 @Component({
   selector: 'app-main-layout.component',
@@ -13,9 +14,14 @@ import { AuthService } from '../../auth/auth.service';
 })
 export class MainLayoutComponent {
   userName = '';
+  userRole = '';
   constructor(private router: Router, private toast: ToastrService, private storageService: Storage,private auth: AuthService) {
     this.auth.userName$.subscribe(name => {
       this.userName = name;
+    });
+
+    this.auth.userRole$.subscribe(role => {
+      this.userRole = role;
     });
   }
 

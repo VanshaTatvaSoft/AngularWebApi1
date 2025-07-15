@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -5,20 +6,22 @@ using Microsoft.IdentityModel.Tokens;
 using WebApi_Pract.Dto;
 using WebApi_Pract.Middlewears;
 using WebApi_Pract.Models;
+using WebApi_Pract.Repository.interfaces;
 
 namespace WebApi_Pract.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ProductController(WebApiPractContext context) : ControllerBase
+public class ProductController(WebApiPractContext context, IGenericRepository<Product> repository) : ControllerBase
 {
     private readonly WebApiPractContext _context = context;
+    private readonly IGenericRepository<Product> _repository = repository;
 
     #region GetAllProducts
     // [Authorize]
     [CustomAuth("admin")]
     [HttpGet("products")]
-    public async Task<IActionResult> GetAllProducts(string searchCriteria = null, int pageNumber = 1, int pageSize = 5)
+    public async Task<IActionResult> GetAllProducts(string searchCriteria = null, int pageNumber = 1, int pageSize = 5, int minPrice = 0, int maxPrice = int.MaxValue)
     {
         IQueryable<Product> productsQuery = _context.Products.Where(p => !p.Isdeleted);
 
@@ -26,14 +29,31 @@ public class ProductController(WebApiPractContext context) : ControllerBase
         {
             productsQuery = productsQuery.Where(p => p.Productname.ToLower().Contains(searchCriteria.ToLower()));
         }
-
+        productsQuery = productsQuery.Where(p => p.Productprice >= minPrice && p.Productprice <= maxPrice);
         int totalCount = await productsQuery.CountAsync();
+
+        // Expression<Func<Product, bool>> filter = p => !p.Isdeleted;
+
+        // if (!string.IsNullOrEmpty(searchCriteria))
+        // {
+        //     filter = p => !p.Isdeleted && p.Productname.ToLower().Contains(searchCriteria.ToLower());
+        // }
 
         List<Product> products = await productsQuery
             .OrderBy(p => p.Id)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
+
+        // (IEnumerable<Product> products1, int totalCount1) = _repository.GetPagedRecords(
+        //     pageSize,
+        //     pageNumber,
+        //     filter,
+        //     orderBy: q => q.OrderBy(p => p.Id)
+        // );
+
+        // totalCount1 -= products1.Count(p => p.Isdeleted);
+        // products1 = products1.Where(p => !p.Isdeleted).ToList();
 
         return Ok(new
         {
@@ -45,7 +65,7 @@ public class ProductController(WebApiPractContext context) : ControllerBase
     }
     #endregion
 
-    #region Name
+    #region SearchProduct
     [HttpGet("search")]
     public async Task<IActionResult> SearchProduct([FromQuery] string query)
     {
@@ -85,8 +105,9 @@ public class ProductController(WebApiPractContext context) : ControllerBase
                 Productprice = productDTO.Productprice,
                 Productquantity = productDTO.Productquantity
             };
-            await _context.Products.AddAsync(product);
-            await _context.SaveChangesAsync();
+            // await _context.Products.AddAsync(product);
+            // await _context.SaveChangesAsync();
+            await _repository.AddAsync(product);
             return Ok(new
             {
                 Status = true,
@@ -117,8 +138,9 @@ public class ProductController(WebApiPractContext context) : ControllerBase
             product.Productprice = productDTO.Productprice;
             product.Productquantity = productDTO.Productquantity;
 
-            _context.Products.Update(product);
-            await _context.SaveChangesAsync();
+            // _context.Products.Update(product);
+            // await _context.SaveChangesAsync();
+            await _repository.EditAsync(product);
             return Ok(new
             {
                 Status = true,
@@ -142,7 +164,8 @@ public class ProductController(WebApiPractContext context) : ControllerBase
     {
         try
         {
-            Product product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
+            // Product product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
+            Product product = await _repository.GetByIdAsync(id);
 
             if (product == null)
             {
@@ -151,8 +174,10 @@ public class ProductController(WebApiPractContext context) : ControllerBase
 
             product.Isdeleted = true;
 
-            _context.Products.Update(product);
-            await _context.SaveChangesAsync();
+            // _context.Products.Update(product);
+            // await _context.SaveChangesAsync();
+
+            await _repository.EditAsync(product);
 
             return Ok(new { Status = false, message = "Product deleted successfully." });
         }

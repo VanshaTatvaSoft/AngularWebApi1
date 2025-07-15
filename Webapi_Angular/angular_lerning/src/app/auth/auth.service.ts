@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Storage } from '../shared/services/storage';
 import { BehaviorSubject } from 'rxjs';
+import { JwtService } from '../shared/services/jwt-service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,21 +15,32 @@ import { BehaviorSubject } from 'rxjs';
 export class AuthService {
   private apiUrl = 'http://localhost:5131/api/UserLogin';
   private userNameSubject = new BehaviorSubject<string>('');
+  private userRoleSubject = new BehaviorSubject<string>('');
   userName$ = this.userNameSubject.asObservable();
+  userRole$ = this.userRoleSubject.asObservable();
 
   constructor(
     private http: HttpClient,
     private router: Router,
     private toast: ToastrService,
-    private storage: Storage
+    private storage: Storage,
+    private jwtService: JwtService
   ) {}
 
   setUserName(name: string) {
     this.userNameSubject.next(name);
   }
 
+  setUserRole(role: string) {
+    this.userRoleSubject.next(role);
+  }
+
   getUserName(): string {
     return this.userNameSubject.getValue();
+  }
+
+  getUserRole(): string {
+    return this.userRoleSubject.getValue();
   }
 
   login(data: LoginModel) {
@@ -63,4 +75,17 @@ export class AuthService {
   getAccessToken(): string | null {
     return this.storage.getItem('access_token');
   }
+
+  handlePostLoginRedirect() {
+    let role = this.jwtService.getUserRole();
+    this.userRoleSubject.next(role || '');
+    if (role === 'Admin') {
+      this.router.navigate(['/dashboard']);
+    } else if (role === 'Client') {
+      this.router.navigate(['/signal']);
+    } else {
+      this.router.navigate(['/AccessDenied']);
+    }
+  }
+
 }

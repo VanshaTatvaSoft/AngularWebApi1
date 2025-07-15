@@ -9,6 +9,8 @@ import { Products } from './products/products';
 import { NotFound } from './error/not-found/not-found';
 import { Forbiden } from './error/forbiden/forbiden';
 import { roleGuard } from './shared/guards/role-guard';
+import { importProvidersFrom } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -36,6 +38,14 @@ export const routes: Routes = [
         path: 'addproduct',
         loadComponent: () =>
           import('./products/add-products-form/add-products-form').then((m) => m.AddProductsForm),
+        canActivate: [authGaurdGuard]
+      },
+      {
+        path: 'signal',
+        loadComponent: () => import('./signal/signal').then((m) => m.Signal),
+        providers: [
+          importProvidersFrom(TranslateModule)
+        ],
         canActivate: [authGaurdGuard]
       }
     ],

@@ -7,15 +7,17 @@ using Microsoft.IdentityModel.Tokens;
 using WebApi_Pract.Dto;
 using WebApi_Pract.Middlewears;
 using WebApi_Pract.Models;
+using WebApi_Pract.Repository.interfaces;
 
 namespace WebApi_Pract.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class UserLoginController(WebApiPractContext context, IConfiguration config) : ControllerBase
+public class UserLoginController(WebApiPractContext context, IConfiguration config, IGenericRepository<User> repository) : ControllerBase
 {
     private readonly WebApiPractContext _context = context;
     private readonly IConfiguration _config = config;
+    private readonly IGenericRepository<User> _repository = repository;
 
     #region Register
     [HttpPost("register")]
@@ -63,6 +65,9 @@ public class UserLoginController(WebApiPractContext context, IConfiguration conf
             .Include(u => u.Role)
             .Include(u => u.UserLogins)
             .FirstOrDefaultAsync(u => u.Email.ToLower() == dto.UserEmail.ToLower());
+
+        // List<User> users = _repository.GetAll(u => u.UserLogins, u => u.Role).ToList();
+        // List<User> users = _repository.GetAll(u => u.Include(x => x.UserLogins).Include(u => u.Role)).ToList();
 
         if (user == null)
         {

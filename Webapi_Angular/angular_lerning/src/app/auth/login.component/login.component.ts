@@ -12,11 +12,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { Storage } from '../../shared/services/storage';
 import { catchError, map, of, Subject } from 'rxjs';
+import { SharedModule } from '../../shared/modules/sharedModule';
 
 @Component({
   selector: 'app-login.component',
   standalone: true,
   imports: [
+    SharedModule,
     CommonModule,
     FormsModule,
     RouterModule,
@@ -74,7 +76,8 @@ export class LoginComponent {
             this.storageService.setItem('refresh_token', res.refreshToken!);
             this.auth.setUserName(res.userName);
             this.toaster.success(res.message);
-            this.router.navigate(['/dashboard']);
+            // this.router.navigate(['/dashboard']);
+            this.auth.handlePostLoginRedirect();
             loginForm.resetForm();
           } else {
             this.toaster.error(res.message);

@@ -1,0 +1,14 @@
+<h1>Product Store</h1>
+<div>
+  <h2>{{ 'GREETING' | translate }}</h2>
+  <p>{{ 'DESCRIPTION' | translate }}</p>
+
+  <select [(ngModel)]="lang" (change)="switchLang(lang)">
+    <option value="en">English</option>
+    <option value="hi">Hindi</option>
+  </select>
+</div>
+<div style="display: flex; gap: 50px;">
+  <app-products></app-products>
+  <app-cart></app-cart>
+</div>

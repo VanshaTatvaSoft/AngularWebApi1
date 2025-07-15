@@ -31,6 +31,8 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { GenericBtn } from '../generic-btn/generic-btn';
+import {MatSliderModule} from '@angular/material/slider';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-generic-list',
@@ -47,7 +49,9 @@ import { GenericBtn } from '../generic-btn/generic-btn';
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
-    GenericBtn
+    GenericBtn,
+    MatSliderModule,
+    
   ],
   templateUrl: './generic-list.html',
   styleUrl: './generic-list.css',
@@ -61,11 +65,28 @@ export class GenericList {
   @Input() totalCount: number = 0;
   @Input() pageSize: number = 5;
   @Input() pageNumber: number = 1;
+  @Input() searchText: string = '';
   @Output() refresh = new EventEmitter<void>();
   @Output() search = new EventEmitter<string>();
   @Output() pageChange = new EventEmitter<any>();
+  @Output() priceFilter = new EventEmitter<{ min: number; max: number }>();
 
-  constructor(private dialog: MatDialog, private injector: Injector) {}
+  minPriceSearch: number = 0;
+  maxPriceSearch: number = 0;
+  minvalue: number = 0;
+  maxvalue: number = 0;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['data'] && this.data && this.data.length > 0) {
+      this.maxPriceSearch = this.data.reduce((max: number, item: any) => {
+        const price = Number(item?.productprice) || 0;
+        return price > max ? price : max;
+      }, 0);
+    }
+    this.maxvalue = this.maxPriceSearch;
+  }
+
+  constructor(private dialog: MatDialog, private injector: Injector, private toast: ToastrService) { }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -109,4 +130,16 @@ export class GenericList {
     let searchString = (event.target as HTMLInputElement).value.trim();
     this.search.emit(searchString);
   }
+
+  onApplyFilter(): void {
+    if (this.minvalue > this.maxvalue) {
+      this.toast.error('Minimum price cannot be greater than maximum price.');
+      return;
+    }
+    this.priceFilter.emit({
+      min: this.minvalue,
+      max: this.maxvalue,
+    });
+  }
+
 }
