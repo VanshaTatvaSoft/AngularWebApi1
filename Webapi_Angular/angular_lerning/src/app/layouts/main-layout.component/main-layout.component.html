@@ -11,16 +11,24 @@
       <h5 class="text-white">Navigation</h5>
       <ul class="nav flex-column">
         <li class="nav-item">
-          <a routerLink="/dashboard" routerLinkActive="active" class="nav-link text-white">Dashboard</a>
+          <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+            class="nav-link text-white">Dashboard</a>
         </li>
         <li class="nav-item">
-          <a routerLink="/products" routerLinkActive="active" class="nav-link text-white">Products</a>
+          <a routerLink="/products" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+            class="nav-link text-white">Products</a>
         </li>
         <li class="nav-item">
-          <a routerLink="/addproduct" routerLinkActive="active" class="nav-link text-white">Add Product</a>
+          <a routerLink="/addproduct" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+            class="nav-link text-white">Add Product</a>
         </li>
         <li class="nav-item">
-          <a routerLink="/signal" routerLinkActive="active" class="nav-link text-white">Signal</a>
+          <a routerLink="/signal" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+            class="nav-link text-white">Signal</a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/userform" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+            class="nav-link text-white">Add User Form Array</a>
         </li>
       </ul>
     </nav>

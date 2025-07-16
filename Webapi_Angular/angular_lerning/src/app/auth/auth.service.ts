@@ -8,12 +8,14 @@ import { ToastrService } from 'ngx-toastr';
 import { Storage } from '../shared/services/storage';
 import { BehaviorSubject } from 'rxjs';
 import { JwtService } from '../shared/services/jwt-service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:5131/api/UserLogin';
+  // private apiUrl = 'http://localhost:5131/api/UserLogin';
+  private apiUrl = `${environment.apiBaseUrl}/UserLogin`;
   private userNameSubject = new BehaviorSubject<string>('');
   private userRoleSubject = new BehaviorSubject<string>('');
   userName$ = this.userNameSubject.asObservable();

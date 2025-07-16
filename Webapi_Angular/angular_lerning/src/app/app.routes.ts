@@ -47,6 +47,14 @@ export const routes: Routes = [
           importProvidersFrom(TranslateModule)
         ],
         canActivate: [authGaurdGuard]
+      },
+      {
+        path: 'userform',
+        loadComponent: () => import('./user-form/user-form').then((m) => m.UserForm),
+        providers: [
+          importProvidersFrom(TranslateModule)
+        ],
+        canActivate: [authGaurdGuard]
       }
     ],
   },

@@ -1,0 +1,36 @@
+<div class="container mt-4">
+  <button class="btn btn-primary mb-3" (click)="addUserFormClick()">Add User</button>
+
+  <form [formGroup]="userForm">
+    <div formArrayName="users">
+      <div *ngFor="let group of forms let i = index" [formGroupName]="i" class="card mb-3 p-3">
+        <h5>User {{ i + 1 }}</h5>
+
+        <div class="mb-2">
+          <label>Name:</label>
+          <input formControlName="name" class="form-control" placeholder="Enter name">
+        </div>
+
+        <div class="mb-2">
+          <label>Email:</label>
+          <input formControlName="email" class="form-control" placeholder="Enter email">
+        </div>
+
+        <div class="mb-2">
+          <label>Age:</label>
+          <input formControlName="age" type="number" class="form-control" placeholder="Enter age">
+        </div>
+
+        <div *ngIf="group.invalid && group.touched" class="text-danger">
+          All fields are required and email must be valid.
+        </div>
+
+        <div>
+          <button (click)="deleteUserForm(i)">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-success" type="button" (click)="submitAll()">Submit All</button>
+  </form>
+</div>
