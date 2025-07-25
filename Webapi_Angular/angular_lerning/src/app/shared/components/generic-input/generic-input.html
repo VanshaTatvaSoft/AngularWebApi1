@@ -1,1 +1,47 @@
-<p>generic-input works!</p>
+<mat-form-field [appearance]="config.appearance" class="w-full" [ngClass]="config.class">
+  <mat-label>{{ config.label }}<span *ngIf="showRequiredStar" class="required-star">*</span></mat-label>
+
+  <!-- Text, Password, Email -->
+  <input matInput [type]="isPassword ? (showPassword ? 'text' : 'password') : config.type"
+    [formControl]="formControl || internalControl" [placeholder]="config.placeholder" [id]="config.id"
+    [disabled]="config.disabled ?? false" (blur)="(formControl || internalControl)?.markAsTouched()" />
+
+
+  <!-- Textarea -->
+  <textarea *ngIf="config.type === 'textarea'" matInput [formControl]="formControl || internalControl"
+    [placeholder]="config.placeholder" [id]="config.id" [disabled]="config.disabled ?? false" (blur)="(formControl || internalControl)?.markAsTouched()"></textarea>
+
+  <!-- Select -->
+  <mat-select *ngIf="config.type === 'select'" [formControl]="formControl || internalControl" [placeholder]="config.placeholder"
+    [disabled]="config.disabled ?? false">
+    <mat-option *ngFor="let opt of config.options" [value]="opt.value">
+      {{ opt.label }}
+    </mat-option>
+  </mat-select>
+
+  <!-- Radio -->
+  <ng-container *ngIf="config.type === 'radio'">
+    <mat-radio-group [formControl]="formControl || internalControl">
+      <mat-radio-button *ngFor="let opt of config.options" [value]="opt.value">
+        {{ opt.label }}
+      </mat-radio-button>
+    </mat-radio-group>
+  </ng-container>
+
+  <!-- Checkbox -->
+  <mat-checkbox *ngIf="config.type === 'checkbox'" [formControl]="formControl || internalControl"
+    [disabled]="config.disabled ?? false">
+    {{ config.label }}
+  </mat-checkbox>
+
+  <mat-icon matSuffix *ngIf="isPassword" matSuffix class="cursor-pointer" (click)="togglePassword()" style="cursor: pointer;">
+    {{ showPassword ? 'visibility' : 'visibility_off' }}
+  </mat-icon>
+
+  <mat-icon matSuffix *ngIf="!isPassword">
+    {{ config.icon }}
+  </mat-icon>
+
+  <mat-hint *ngIf="config.hint">{{ config.hint }}</mat-hint>
+  <mat-error *ngIf="errorMessage">{{ errorMessage }}</mat-error>
+</mat-form-field>

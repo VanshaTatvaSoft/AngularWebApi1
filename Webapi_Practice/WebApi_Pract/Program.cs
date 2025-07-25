@@ -27,7 +27,7 @@ builder.Services.AddControllers()
 .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
-    }); ;
+    }); 
 
 // dbcontext configuration
 var conn = builder.Configuration.GetConnectionString("Default");

@@ -18,8 +18,8 @@
               <mat-label>Email</mat-label>
               <input matInput type="email" formControlName="email" placeholder="Enter email" />
               <mat-error *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid">
-                <span *ngIf="registerForm.get('email')?.errors?.['required']">Email is required.</span>
-                <span *ngIf="registerForm.get('email')?.errors?.['email']">Invalid email format.</span>
+                <span class="fs-6" *ngIf="registerForm.get('email')?.errors?.['required']">Email is required.</span>
+                <span class="fs-6" *ngIf="registerForm.get('email')?.errors?.['email']">Invalid email format.</span>
               </mat-error>
             </mat-form-field>
 

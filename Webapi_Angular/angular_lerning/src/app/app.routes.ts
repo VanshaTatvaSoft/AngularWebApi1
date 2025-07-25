@@ -26,7 +26,7 @@ export const routes: Routes = [
     path: '',
     component: MainLayoutComponent,
     children: [
-      { path: 'dashboard', component: Dashboard, canActivate: [authGaurdGuard] },
+      { path: 'dashboard', component: Dashboard, canActivate: [] },
       {
         path: 'products',
         loadComponent: () =>
@@ -38,7 +38,7 @@ export const routes: Routes = [
         path: 'addproduct',
         loadComponent: () =>
           import('./products/add-products-form/add-products-form').then((m) => m.AddProductsForm),
-        canActivate: [authGaurdGuard]
+        canActivate: []
       },
       {
         path: 'signal',
@@ -46,7 +46,7 @@ export const routes: Routes = [
         providers: [
           importProvidersFrom(TranslateModule)
         ],
-        canActivate: [authGaurdGuard]
+        canActivate: []
       },
       {
         path: 'userform',
@@ -54,7 +54,7 @@ export const routes: Routes = [
         providers: [
           importProvidersFrom(TranslateModule)
         ],
-        canActivate: [authGaurdGuard]
+        canActivate: []
       }
     ],
   },

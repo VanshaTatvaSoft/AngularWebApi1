@@ -16,6 +16,7 @@ import { environment } from '../../environments/environment';
 export class AuthService {
   // private apiUrl = 'http://localhost:5131/api/UserLogin';
   private apiUrl = `${environment.apiBaseUrl}/UserLogin`;
+  
   private userNameSubject = new BehaviorSubject<string>('');
   private userRoleSubject = new BehaviorSubject<string>('');
   userName$ = this.userNameSubject.asObservable();

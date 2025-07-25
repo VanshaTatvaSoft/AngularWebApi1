@@ -66,12 +66,12 @@ export class Products implements OnInit {
   //   }
   // }
 
-  // loadMoreClicked(): void{
-  //   if(!this.allLoaded){
-  //     this.pageNumber++;
-  //     this.loadProducts();
-  //   }
-  // }
+  loadMoreClicked(): void{
+    if(!this.allLoaded){
+      this.pageNumber++;
+      this.loadProducts();
+    }
+  }
 
   loadProducts(searchText: string = ''): void {
     this.productService
@@ -80,8 +80,8 @@ export class Products implements OnInit {
         next: (res) => {
           console.log(res);
           if (res.status) {
-            this.products = res.products;
-            // this.products = [...this.products, ...res.products];
+            // this.products = res.products;
+            this.products = [...this.products, ...res.products];
             this.totalCount = res.totalCount;
             if (this.products.length >= res.totalCount) {
               this.allLoaded = true;

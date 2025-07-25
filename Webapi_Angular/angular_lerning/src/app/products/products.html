@@ -1,5 +1,5 @@
 <!-- <ng-container *ngIf="products | async as products"> -->
-<app-generic-list
+<!-- <app-generic-list
   [title]="'Product List'"
   [addBtn]="'Add Product'"
   [data]="products"
@@ -14,7 +14,7 @@
   (pageChange)="onPageChange($event)"
   (priceFilter)="onPriceFilter($event)"
   >
-  </app-generic-list>
+  </app-generic-list> -->
 <!-- </ng-container> -->
 
 
@@ -47,7 +47,7 @@
 </div> -->
 
 <!-- show product on load clicked -->
-<!-- <div class="scroll-wrapper" >
+<div class="scroll-wrapper" >
   <div class="product-container">
     <div class="d-flex flex-column">
       <div *ngFor="let product of products">
@@ -72,5 +72,5 @@
     <div *ngIf="isLoading" class="loading">Loading...</div>
     <div *ngIf="allLoaded" class="end">No more products.</div>
   </div>
-</div> -->
+</div>
 

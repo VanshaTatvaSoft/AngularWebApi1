@@ -38,6 +38,7 @@ export class UserForm {
   addUserFormClick(): void {
     const userForm = this.getAddUserForm();
     this.userFormArray.push(userForm);
+    console.log("User Form - ", this.userFormArray.value);
   }
 
   submitAll(): void {
