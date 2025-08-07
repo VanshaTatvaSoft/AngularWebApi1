@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgClass, NgTemplateOutlet } from '@angular/common';
 import { Component, forwardRef, Input, OnInit } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, FormControl, NG_VALIDATORS, NG_VALUE_ACCESSOR, ReactiveFormsModule, ValidationErrors, Validator } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -12,7 +12,8 @@ import { GenericInputInterface } from '../../../auth/models/GenericInputInterfac
 
 @Component({
   selector: 'lib-generic-input',
-  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatCheckboxModule, MatRadioModule, MatIconModule, MatButtonModule],
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatCheckboxModule, MatRadioModule, MatIconModule, MatButtonModule, NgClass, NgTemplateOutlet],
   templateUrl: './generic-input.html',
   styleUrl: './generic-input.css',
   providers: [

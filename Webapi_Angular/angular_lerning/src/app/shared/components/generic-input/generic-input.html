@@ -1,47 +1,120 @@
-<mat-form-field [appearance]="config.appearance" class="w-full" [ngClass]="config.class">
-  <mat-label>{{ config.label }}<span *ngIf="showRequiredStar" class="required-star">*</span></mat-label>
+<!-- TEXT, PASSWORD, EMAIL -->
+@if (config.type !== 'select' && config.type !== 'textarea' && config.type !== 'radio' && config.type !== 'checkbox') {
+  <mat-form-field [appearance]="config.appearance" class="w-full" [ngClass]="config.class">
+    <mat-label>
+      {{ config.label }}
+      @if (showRequiredStar) {
+        <span class="required-star">*</span>
+      }
+    </mat-label>
 
-  <!-- Text, Password, Email -->
-  <input matInput [type]="isPassword ? (showPassword ? 'text' : 'password') : config.type"
-    [formControl]="formControl || internalControl" [placeholder]="config.placeholder" [id]="config.id"
-    [disabled]="config.disabled ?? false" (blur)="(formControl || internalControl)?.markAsTouched()" />
+    <input matInput [type]="isPassword ? (showPassword ? 'text' : 'password') : config.type"
+           [formControl]="formControl || internalControl"
+           [placeholder]="config.placeholder"
+           [id]="config.id"
+           [disabled]="config.disabled ?? false"
+           (blur)="(formControl || internalControl)?.markAsTouched()" />
 
+    @if (isPassword) {
+      <mat-icon matSuffix class="cursor-pointer" (click)="togglePassword()">
+        {{ showPassword ? 'visibility' : 'visibility_off' }}
+      </mat-icon>
+    }
 
-  <!-- Textarea -->
-  <textarea *ngIf="config.type === 'textarea'" matInput [formControl]="formControl || internalControl"
-    [placeholder]="config.placeholder" [id]="config.id" [disabled]="config.disabled ?? false" (blur)="(formControl || internalControl)?.markAsTouched()"></textarea>
+    @if (!isPassword && config.icon) {
+      <mat-icon matSuffix>{{ config.icon }}</mat-icon>
+    }
 
-  <!-- Select -->
-  <mat-select *ngIf="config.type === 'select'" [formControl]="formControl || internalControl" [placeholder]="config.placeholder"
-    [disabled]="config.disabled ?? false">
-    <mat-option *ngFor="let opt of config.options" [value]="opt.value">
-      {{ opt.label }}
-    </mat-option>
-  </mat-select>
+    @if (config.hint) {
+      <mat-hint>{{ config.hint }}</mat-hint>
+    }
 
-  <!-- Radio -->
-  <ng-container *ngIf="config.type === 'radio'">
+    @if (errorMessage) {
+      <mat-error>{{ errorMessage }}</mat-error>
+    }
+  </mat-form-field>
+}
+
+<!-- TEXTAREA -->
+@if (config.type === 'textarea') {
+  <mat-form-field [appearance]="config.appearance" class="w-100" [ngClass]="config.class">
+    <mat-label>
+      {{ config.label }}
+      @if (showRequiredStar) {
+        <span class="required-star">*</span>
+      }
+    </mat-label>
+
+    <textarea matInput
+              [formControl]="formControl || internalControl"
+              [placeholder]="config.placeholder"
+              [id]="config.id"
+              [rows]="config?.rows || 3"
+              [disabled]="config.disabled ?? false"
+              (blur)="(formControl || internalControl)?.markAsTouched()"></textarea>
+
+    @if (config.hint) {
+      <mat-hint>{{ config.hint }}</mat-hint>
+    }
+
+    @if (errorMessage) {
+      <mat-error>{{ errorMessage }}</mat-error>
+    }
+  </mat-form-field>
+}
+
+<!-- SELECT -->
+@if (config.type === 'select') {
+  <mat-form-field [appearance]="config.appearance" class="w-full" [ngClass]="config.class">
+    <mat-label>
+      {{ config.label }}
+      @if (showRequiredStar) {
+        <span class="required-star">*</span>
+      }
+    </mat-label>
+
+    <mat-select [formControl]="formControl || internalControl"
+                [placeholder]="config.placeholder"
+                [disabled]="config.disabled ?? false">
+      @for (opt of config.options; track opt.value) {
+        <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+      }
+    </mat-select>
+
+    @if (config.hint) {
+      <mat-hint>{{ config.hint }}</mat-hint>
+    }
+
+    @if (errorMessage) {
+      <mat-error>{{ errorMessage }}</mat-error>
+    }
+  </mat-form-field>
+}
+
+<!-- RADIO -->
+@if (config.type === 'radio') {
+  <div class="radio-group" [ngClass]="config.class">
+    <label>{{ config.label }}</label>
     <mat-radio-group [formControl]="formControl || internalControl">
-      <mat-radio-button *ngFor="let opt of config.options" [value]="opt.value">
-        {{ opt.label }}
-      </mat-radio-button>
+      @for (opt of config.options; track opt.value) {
+        <mat-radio-button [value]="opt.value">{{ opt.label }}</mat-radio-button>
+      }
     </mat-radio-group>
-  </ng-container>
+    @if (errorMessage) {
+      <mat-error>{{ errorMessage }}</mat-error>
+    }
+  </div>
+}
 
-  <!-- Checkbox -->
-  <mat-checkbox *ngIf="config.type === 'checkbox'" [formControl]="formControl || internalControl"
-    [disabled]="config.disabled ?? false">
-    {{ config.label }}
-  </mat-checkbox>
-
-  <mat-icon matSuffix *ngIf="isPassword" matSuffix class="cursor-pointer" (click)="togglePassword()" style="cursor: pointer;">
-    {{ showPassword ? 'visibility' : 'visibility_off' }}
-  </mat-icon>
-
-  <mat-icon matSuffix *ngIf="!isPassword">
-    {{ config.icon }}
-  </mat-icon>
-
-  <mat-hint *ngIf="config.hint">{{ config.hint }}</mat-hint>
-  <mat-error *ngIf="errorMessage">{{ errorMessage }}</mat-error>
-</mat-form-field>
+<!-- CHECKBOX -->
+@if (config.type === 'checkbox') {
+  <div class="checkbox-group" [ngClass]="config.class">
+    <mat-checkbox [formControl]="formControl || internalControl"
+                  [disabled]="config.disabled ?? false">
+      {{ config.label }}
+    </mat-checkbox>
+    @if (errorMessage) {
+      <mat-error>{{ errorMessage }}</mat-error>
+    }
+  </div>
+}

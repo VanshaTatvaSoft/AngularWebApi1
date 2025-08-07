@@ -12,6 +12,7 @@ export interface GenericInputInterface {
   label: string;
   hint?: string | null;
   disabled?: boolean;
+  rows?: number;
   options?: { value: string; label: string }[];
   class?: string;
   customValidators?: ((control: AbstractControl) => ValidationErrors | null)[];

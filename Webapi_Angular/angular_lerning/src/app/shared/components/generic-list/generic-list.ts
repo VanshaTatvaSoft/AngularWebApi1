@@ -51,7 +51,7 @@ import { ToastrService } from 'ngx-toastr';
     MatInputModule,
     GenericBtn,
     MatSliderModule,
-    
+
   ],
   templateUrl: './generic-list.html',
   styleUrl: './generic-list.css',

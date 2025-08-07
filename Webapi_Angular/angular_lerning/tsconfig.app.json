@@ -8,6 +8,10 @@
       "node"
     ]
   },
+  "angularCompilerOptions": {
+    "enableTemplateControlFlow": true,
+    "strictTemplates": true
+  },
   "include": [
     "src/**/*.ts"
   ],

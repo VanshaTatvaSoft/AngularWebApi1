@@ -1,17 +1,15 @@
 <div class="container mt-5">
   <div class="card p-4 shadow-sm">
     <h2>Welcome to the Dashboard</h2>
-    <p class="lead">This page is protected by AuthGuard.</p>
+    <p class="lead">This is rendered using the generic form component.</p>
 
-    <form [formGroup]="form" novalidate>
-      <lib-generic-input
-        [config]="emailConfig"
-        [formControl]="emailControl">
-      </lib-generic-input>
-    </form>
+    <app-generic-form
+      [config]="formConfig"
+      (submitted)="onFormSubmit($event)"
+      (cancelled)="onFormCancel()">
+    </app-generic-form>
 
     <div class="mt-3">
-      <strong>Email Value:</strong> {{ form.get('email')?.value }}
     </div>
   </div>
 </div>
