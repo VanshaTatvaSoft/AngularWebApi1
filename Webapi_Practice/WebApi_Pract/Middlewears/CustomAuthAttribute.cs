@@ -14,6 +14,7 @@ public class CustomAuthAttribute(string roles) : Attribute, IAuthorizationFilter
     public void OnAuthorization(AuthorizationFilterContext context)
     {
         String token = context.HttpContext.Request.Headers.Authorization.FirstOrDefault()?.Split(" ").Last();
+        // string fingerprint = context.HttpContext.Request.Headers["X-Client-Fingerprint"].FirstOrDefault();
         if (string.IsNullOrEmpty(token))
         {
             context.Result = new UnauthorizedResult();
@@ -36,6 +37,12 @@ public class CustomAuthAttribute(string roles) : Attribute, IAuthorizationFilter
             }, out _);
 
             String role = principal.FindFirst(ClaimTypes.Role)?.Value;
+            string fp = principal.FindFirst("fingerprint")?.Value;
+
+            // if(fp != fingerprint)
+            // {
+            //     context.Result = new UnauthorizedResult();
+            // }
 
             if (!_roles.Contains(role, StringComparer.OrdinalIgnoreCase))
             {

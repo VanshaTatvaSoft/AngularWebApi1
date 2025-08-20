@@ -83,8 +83,9 @@ public class UserLoginController(WebApiPractContext context, IConfiguration conf
         {
             Status = true,
             Message = "User login successfully",
-            AccessToken = GenerateAccessToken(user),
+            AccessToken = GenerateAccessToken(user, dto.FingerPrint),
             RefreshToken = GenerateRefreshToken(user),
+            FingerPrint = dto.FingerPrint,
             UserName = user.Username
         });
     }
@@ -120,7 +121,7 @@ public class UserLoginController(WebApiPractContext context, IConfiguration conf
             {
                 Status = true,
                 Message = "Valid refresh token",
-                AccessToken = GenerateAccessToken(user),
+                AccessToken = GenerateAccessToken(user, dto.FingerPrint),
                 RefreshToken = GenerateRefreshToken(user)
             });
         }
@@ -132,14 +133,15 @@ public class UserLoginController(WebApiPractContext context, IConfiguration conf
     #endregion
 
     #region Jwt
-    private string GenerateAccessToken(User user)
+    private string GenerateAccessToken(User user, string fingerPrint)
     {
         Claim[] claims =
         [
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(ClaimTypes.Name, user.Username),
             new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.Role, user.Role.Rolename)
+            new Claim(ClaimTypes.Role, user.Role.Rolename),
+            new Claim("fingerprint", fingerPrint)
         ];
 
         SymmetricSecurityKey key = new(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));

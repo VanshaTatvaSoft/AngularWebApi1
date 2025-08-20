@@ -26,7 +26,7 @@ export const routes: Routes = [
     path: '',
     component: MainLayoutComponent,
     children: [
-      { path: 'dashboard', component: Dashboard, canActivate: [] },
+      { path: 'dashboard', component: Dashboard, canActivate: [authGaurdGuard] },
       {
         path: 'products',
         loadComponent: () =>

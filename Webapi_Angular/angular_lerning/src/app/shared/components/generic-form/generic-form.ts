@@ -1,10 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { GenericFormInterface } from '../../../auth/models/GenericFormInterface';
+// import { GenericFormInterface } from '@vanshasomani/generic-form';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
+// import { GenericInput } from '@vanshasomani/generic-input';
+import { GenericFormInterface } from '../../../auth/models/GenericFormInterface';
 import { GenericInput } from '../generic-input/generic-input';
 
 @Component({
@@ -34,8 +36,8 @@ export class GenericForm implements OnInit{
 
       let initialValue: any = field.value ?? '';
 
-      if (field.type === 'checkbox') initialValue = false;
-      if (field.type === 'radio') initialValue = null;
+      if (field.type === 'checkbox') initialValue = field.value ?? false;
+      if (field.type === 'radio') initialValue = field.value ?? null;
       field.customValidators = [];
 
       group[field.name] = [{ value: initialValue , disabled: field.disabled ?? false }, validators];
@@ -43,7 +45,7 @@ export class GenericForm implements OnInit{
       this.form = this.fb.group(group);
     }
 
-    console.log("Genric form - ",this.form);
+    // console.log("Genric form - ",this.form);
   }
 
   onSubmit() {
@@ -55,6 +57,7 @@ export class GenericForm implements OnInit{
   }
 
   onCancel() {
+    this.form.reset();
     this.cancelled.emit(true);
   }
 

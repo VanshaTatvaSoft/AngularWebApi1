@@ -74,6 +74,7 @@ export class LoginComponent {
           if (res.status) {
             this.storageService.setItem('access_token', res.accessToken!);
             this.storageService.setItem('refresh_token', res.refreshToken!);
+            this.storageService.setItem('fp', res.fingerPrint!);
             this.auth.setUserName(res.userName);
             this.toaster.success(res.message);
             // this.router.navigate(['/dashboard']);

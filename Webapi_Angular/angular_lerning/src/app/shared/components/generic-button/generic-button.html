@@ -1,0 +1,76 @@
+<!-- generic-button.html -->
+
+<!-- BOOTSTRAP BUTTON -->
+<button *ngIf="config.framework === 'bootstrap'"
+        [type]="config.type || 'button'"
+        [disabled]="config.disabled"
+        class="btn btn-{{config.color || 'primary'}} btn-{{config.size || 'md'}}"
+        [class.w-100]="config.fullWidth"
+        (click)="handleClick($event)">
+
+  <i *ngIf="config.icon" class="{{ config.icon }} me-2"></i>
+  {{ config.label }}
+</button>
+
+
+<!-- MATERIAL RAISED -->
+<button *ngIf="config.framework === 'material' && config.variant === 'raised'"
+        mat-raised-button
+        [color]="config.color || 'primary'"
+        [disabled]="config.disabled"
+        [class.w-100]="config.fullWidth"
+        [matTooltip]="config.tooltip"
+        (click)="handleClick($event)">
+
+  <mat-icon *ngIf="config.icon && config.iconPosition !== 'end'">{{ config.icon }}</mat-icon>
+  {{ config.label }}
+  <mat-icon *ngIf="config.icon && config.iconPosition === 'end'">{{ config.icon }}</mat-icon>
+</button>
+
+<!-- MATERIAL FLAT -->
+<button *ngIf="config.framework === 'material' && config.variant === 'flat'"
+        mat-flat-button
+        [color]="config.color || 'primary'"
+        [disabled]="config.disabled"
+        [matTooltip]="config.tooltip"
+        (click)="handleClick($event)">
+
+  <mat-icon *ngIf="config.icon && config.iconPosition !== 'end'">{{ config.icon }}</mat-icon>
+  {{ config.label }}
+  <mat-icon *ngIf="config.icon && config.iconPosition === 'end'">{{ config.icon }}</mat-icon>
+</button>
+
+<!-- MATERIAL STROKED -->
+<button *ngIf="config.framework === 'material' && config.variant === 'stroked'"
+        mat-stroked-button
+        [color]="config.color || 'primary'"
+        [disabled]="config.disabled"
+        [matTooltip]="config.tooltip"
+        (click)="handleClick($event)">
+
+  <mat-icon *ngIf="config.icon && config.iconPosition !== 'end'">{{ config.icon }}</mat-icon>
+  {{ config.label }}
+  <mat-icon *ngIf="config.icon && config.iconPosition === 'end'">{{ config.icon }}</mat-icon>
+</button>
+
+<!-- MATERIAL FAB -->
+<button *ngIf="config.framework === 'material' && config.variant === 'fab'"
+        mat-fab
+        [color]="config.color || 'primary'"
+        [disabled]="config.disabled"
+        [matTooltip]="config.tooltip"
+        (click)="handleClick($event)">
+
+  <mat-icon *ngIf="config.icon">{{ config.icon }}</mat-icon>
+</button>
+
+<!-- MATERIAL MINI FAB -->
+<button *ngIf="config.framework === 'material' && config.variant === 'mini-fab'"
+        mat-mini-fab
+        [color]="config.color || 'primary'"
+        [disabled]="config.disabled"
+        [matTooltip]="config.tooltip"
+        (click)="handleClick($event)">
+
+  <mat-icon *ngIf="config.icon">{{ config.icon }}</mat-icon>
+</button>

@@ -19,7 +19,7 @@ public class ProductController(WebApiPractContext context, IGenericRepository<Pr
 
     #region GetAllProducts
     // [Authorize]
-    [CustomAuth("admin")]
+    // [CustomAuth("admin")]
     [HttpGet("products")]
     public async Task<IActionResult> GetAllProducts(string searchCriteria = null, int pageNumber = 1, int pageSize = 5, int minPrice = 0, int maxPrice = int.MaxValue)
     {

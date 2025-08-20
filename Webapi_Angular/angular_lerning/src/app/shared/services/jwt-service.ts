@@ -7,6 +7,7 @@ export interface JwtPayload {
   "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name": string;
   "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress": string;
   "http://schemas.microsoft.com/ws/2008/06/identity/claims/role": string;
+  "fingerprint": string;
   exp: number;
   iss: string;
   aud: string;
@@ -36,6 +37,14 @@ export class JwtService {
 
     const decoded = jwtDecode<JwtPayload>(token);
     return decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
+  }
+
+  getFingerPrint(): string {
+    const token = this.getAccessToken();
+    if (!token) return "";
+
+    const decoded = jwtDecode<JwtPayload>(token);
+    return decoded["fingerprint"];
   }
 
   isRole(expectedRole: string): boolean {

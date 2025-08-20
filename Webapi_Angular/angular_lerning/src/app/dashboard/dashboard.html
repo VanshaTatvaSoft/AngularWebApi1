@@ -1,7 +1,13 @@
-<div class="container mt-5">
+<div class="container mt-2">
   <div class="card p-4 shadow-sm">
     <h2>Welcome to the Dashboard</h2>
     <p class="lead">This is rendered using the generic form component.</p>
+
+    <!-- <lib-generic-form
+      [config]="formConfig"
+      (submitted)="onFormSubmit($event)"
+      (cancelled)="onFormCancel()">
+    </lib-generic-form> -->
 
     <app-generic-form
       [config]="formConfig"

@@ -5,11 +5,12 @@ export interface GenericInputInterface {
   type: string;
   placeholder: string;
   showRequiredStar?: boolean;
-  value?: string;
+  value?: any;
   id: string;
   name: string;
   icon?: string | null;
   label: string;
+  labelPosition?: 'before' | 'after';
   hint?: string | null;
   disabled?: boolean;
   rows?: number;
@@ -17,4 +18,10 @@ export interface GenericInputInterface {
   class?: string;
   customValidators?: ((control: AbstractControl) => ValidationErrors | null)[];
   customErrorMessages?: { [key: string]: string };
+  minDate?: Date;
+  maxDate?: Date;
+  startView?: 'month' | 'year' | 'multi-year';
+  accept?: string;         // Allowed file types e.g. "image/*,.pdf"
+  // multiple?: boolean;      // Allow multiple file selection
+  showPreview?: boolean;
 }

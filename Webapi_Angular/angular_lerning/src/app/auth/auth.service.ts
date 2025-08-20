@@ -6,9 +6,10 @@ import { RegisterModel } from './models/register.model';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Storage } from '../shared/services/storage';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, from, switchMap } from 'rxjs';
 import { JwtService } from '../shared/services/jwt-service';
 import { environment } from '../../environments/environment';
+import { FingerprintService } from '../shared/services/fingerprint-service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +17,7 @@ import { environment } from '../../environments/environment';
 export class AuthService {
   // private apiUrl = 'http://localhost:5131/api/UserLogin';
   private apiUrl = `${environment.apiBaseUrl}/UserLogin`;
-  
+
   private userNameSubject = new BehaviorSubject<string>('');
   private userRoleSubject = new BehaviorSubject<string>('');
   userName$ = this.userNameSubject.asObservable();
@@ -27,7 +28,8 @@ export class AuthService {
     private router: Router,
     private toast: ToastrService,
     private storage: Storage,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private fingerPrintService: FingerprintService
   ) {}
 
   setUserName(name: string) {
@@ -47,10 +49,20 @@ export class AuthService {
   }
 
   login(data: LoginModel) {
-    const formData = new FormData();
-    formData.append('userEmail', data.useremail);
-    formData.append('password', data.password);
-    return this.http.post<TokenResponse>(`${this.apiUrl}/login`, formData);
+    // const formData = new FormData();
+    // formData.append('userEmail', data.useremail);
+    // formData.append('password', data.password);
+    // return this.http.post<TokenResponse>(`${this.apiUrl}/login`, formData);
+
+    return from(this.fingerPrintService.getFingerPrint()).pipe(
+      switchMap((fingerprint) => {
+        const formData = new FormData();
+        formData.append('userEmail', data.useremail);
+        formData.append('password', data.password);
+        formData.append('fingerprint', fingerprint);
+        return this.http.post<TokenResponse>(`${this.apiUrl}/login`, formData);
+      })
+    );
   }
 
   register(data: RegisterModel) {
@@ -60,12 +72,23 @@ export class AuthService {
   }
 
   refreshToken(refreshToken: string) {
-    const formData = new FormData();
-    formData.append('refreshToken', refreshToken);
-    return this.http.post<TokenResponse>(`${this.apiUrl}/refresh`, formData);
+    // const formData = new FormData();
+    // formData.append('fingerPrint', this.storage.getItem('fp') || '');
+    // formData.append('refreshToken', refreshToken);
+    // return this.http.post<TokenResponse>(`${this.apiUrl}/refresh`, formData);
+
+    return from(this.fingerPrintService.getFingerPrint()).pipe(
+      switchMap((fingerprint) => {
+        const formData = new FormData();
+        formData.append('fingerPrint', fingerprint);
+        formData.append('refreshToken', refreshToken);
+        return this.http.post<TokenResponse>(`${this.apiUrl}/refresh`, formData);
+      })
+    );
   }
 
   logout() {
+    debugger
     localStorage.clear();
     this.toast.success('Logout success');
     this.router.navigate(['/login']);

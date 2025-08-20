@@ -88,7 +88,11 @@ export class Products implements OnInit {
             }
           }
         },
-        error: () => alert('Failed to load products.'),
+        error: (err) => {
+          debugger
+          console.log('Error - ',err);
+          console.log('Failed to load product');
+        },
       });
 
     // this.products = this.productService
